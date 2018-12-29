@@ -16,7 +16,12 @@ const initialInvoices = {
         {id: 3317, customer: 'Mary Jane', discount: 20, total: 305.99},
 
     ],
-    text: '',
+    newInvoice: {id: 3340, customer: 'Bob Smith', discount: 15, total: 25.99,
+                 invoiceItems: [{id: 2205, name: 'Neon Green Hat', invoiceId: 3340, quantity: 1, price: 21.99},
+                                {id: 2204, name: 'Egg Timer', invoiceId: 3340, quantity: 5, price: 15.99},
+                                {id: 2203, name: 'Pet Rock', invoiceId: 3340, quantity: 3, price: 5.99}
+
+                 ]}
 
 };
 
@@ -40,6 +45,19 @@ const initialCustomers = {
     ]
 }
 
+function rdcCustomers(state = initialCustomers, action) {
+    switch (action.type) {
+        default:
+            return state
+    }
+}
+
+function rdcProducts(state = initialProducts, action) {
+    switch (action.type) {
+        default:
+            return state
+    }
+}
 
 
 function rdcInvoices(state = initialInvoices, action) {
@@ -85,10 +103,12 @@ function rdcInvoices(state = initialInvoices, action) {
     }
 }
 
+
+
 const rootReducer = combineReducers({
     invoices: rdcInvoices,
-    //customers: rdcCustomers,
-    //products: rdcProducts,
+    customers: rdcCustomers,
+    products: rdcProducts,
 });
 
 export default rootReducer;
