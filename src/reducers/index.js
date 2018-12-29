@@ -3,19 +3,53 @@ import { combineReducers } from 'redux';
 import * as act from './actions'; // CONSTANTS FROM ACTIONS
 import uuidv4 from 'uuid/v4';
 
+INSERT INTO `customers` '555-534-2342','2018-12-28 15:15:52.701 +00:00','2018-12-28 15:15:52.701 +00:00');
+Executing (default): INSERT INTO `products` (`id`,`name`,`price`,`createdAt`,`updatedAt`) VALUES (NULL,'Parachute Pants',29.99,'2018-12-28 15:15:52.701 +00:00','2018-12-28 15:15:52.701 +00:00');
+Executing (default): INSERT INTO `products` (`id`,`name`,`price`,`createdAt`,`updatedAt`) VALUES (NULL,'Phone Holder',9.99,'2018-12-28 15:15:52.701 +00:00','2018-12-28 15:15:52.701 +00:00');
+Executing (default): INSERT INTO `products` (`id`,`name`,`price`,`createdAt`,`updatedAt`) VALUES (NULL,'Pet Rock',5.99,'2018-12-28 15:15:52.701 +00:00','2018-12-28 15:15:52.701 +00:00');
+Executing (default): INSERT INTO `products` (`id`,`name`,`price`,`createdAt`,`updatedAt`) VALUES (NULL,'Egg Timer',15.99,'2018-12-28 15:15:52.702 +00:00','2018-12-28 15:15:52.702 +00:00');
+Executing (default): INSERT INTO `products` (`id`,`name`,`price`,`createdAt`,`updatedAt`) VALUES (NULL,'Neon Green Hat',21.99,'2018-12-28 15:15:52.702 +00:00','2018-12-28 15:15:52.702 +00:00');
 
-const initialApp = {
 
-    tasks: [{content: 'Read 30 pages from the book', done: false, id: uuidv4(), isEdited: false},
-        {content: 'Write a letter', done: false, id: uuidv4(), isEdited: false},
-        {content: 'Prepare for tomorrow', done: true, id: uuidv4(), isEdited: false}
+const initialInvoices = {
+
+    invoices: [{id: 3301, customer: 'Mark Benson', discount: 10, total: 15.99},
+        {id: 3303, customer: 'Bob Smith', discount: 15, total: 25.99},
+        {id: 3305, customer: 'Mary Jane', discount: 5, total: 105.99},
+        {id: 3306, customer: 'Freddy Black', discount: 10, total: 5.99},
+        {id: 3308, customer: 'John Draper', discount: 10, total: 205.99},
+        {id: 3309, customer: 'John Draper', discount: 5, total: 25.99},
+        {id: 3311, customer: 'Bob Smith', discount: 10, total: 15.99},
+        {id: 3317, customer: 'Mary Jane', discount: 20, total: 305.99},
+
     ],
     text: '',
 
 };
 
+const initialProducts = { products: [
+        {id: 2201, name: 'Parachute Pants', price: 29.99, createdAt: '2018-12-28 15:15:52.701 +00:00', updatedAt: '2018-12-28 15:15:52.701 +00:00'},
+        {id: 2202, name: 'Phone Holder', price: 9.99,  createdAt: '2018-12-28 15:15:52.701 +00:00', updatedAt: '2018-12-28 15:15:52.701 +00:00'},
+        {id: 2203, name: 'Pet Rock', price: 5.99,  createdAt: '2018-12-28 15:15:52.701 +00:00', updatedAt: '2018-12-28 15:15:52.701 +00:00'},
+        {id: 2204, name: 'Egg Timer', price: 15.99,  createdAt: '2018-12-28 15:15:52.702 +00:00', updatedAt: '2018-12-28 15:15:52.702 +00:00'},
+        {id: 2205, name: 'Neon Green Hat', price: 21.99,  createdAt: '2018-12-28 15:15:52.702 +00:00', updatedAt: '2018-12-28 15:15:52.702 +00:00'},
+        ]
 
-function rdcApp(state = initialApp, action) {
+}
+
+const initialCustomers = {
+    customers: [{id: 111, name: 'Mark Benson', adress: '353 Rochester St, Rialto FL 43250', phone: '555-534-2342' },
+                {id: 112, name: 'Bob Smith', adress: '215 Market St, Dansville CA 94', phone: '555-534-2177' },
+                {id: 113, name: 'John Draper', adress: '890 Main St, Fontana IL 31450', phone: '555-534-1111' },
+                {id: 117, name: 'Mary Jane', adress: '555 Vallei St, Rialto FL 43250', phone: '555-534-2342' },
+                {id: 118, name: 'Freddy Black', adress: '777 Dorton St, Dansville CA 94', phone: '555-534-2177' },
+                {id: 119, name: 'Harry Simus ', adress: '558 Lowpi St, Fontana IL 31450', phone: '555-534-1111' },
+    ]
+}
+
+
+
+function rdcInvoices(state = initialApp, action) {
     console.log(action.payload);
     const tasksCopy = [...state.tasks];
     const clickedTaskIndex = tasksCopy.findIndex((item => item.id === action.payload))
@@ -54,7 +88,9 @@ function rdcApp(state = initialApp, action) {
 }
 
 const rootReducer = combineReducers({
-    app: rdcApp,
+    invoices: rdcInvoices,
+    customers: rdcCustomers,
+    products: rdcProducts,
 });
 
 export default rootReducer;
