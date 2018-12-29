@@ -3,13 +3,6 @@ import { combineReducers } from 'redux';
 import * as act from './actions'; // CONSTANTS FROM ACTIONS
 import uuidv4 from 'uuid/v4';
 
-INSERT INTO `customers` '555-534-2342','2018-12-28 15:15:52.701 +00:00','2018-12-28 15:15:52.701 +00:00');
-Executing (default): INSERT INTO `products` (`id`,`name`,`price`,`createdAt`,`updatedAt`) VALUES (NULL,'Parachute Pants',29.99,'2018-12-28 15:15:52.701 +00:00','2018-12-28 15:15:52.701 +00:00');
-Executing (default): INSERT INTO `products` (`id`,`name`,`price`,`createdAt`,`updatedAt`) VALUES (NULL,'Phone Holder',9.99,'2018-12-28 15:15:52.701 +00:00','2018-12-28 15:15:52.701 +00:00');
-Executing (default): INSERT INTO `products` (`id`,`name`,`price`,`createdAt`,`updatedAt`) VALUES (NULL,'Pet Rock',5.99,'2018-12-28 15:15:52.701 +00:00','2018-12-28 15:15:52.701 +00:00');
-Executing (default): INSERT INTO `products` (`id`,`name`,`price`,`createdAt`,`updatedAt`) VALUES (NULL,'Egg Timer',15.99,'2018-12-28 15:15:52.702 +00:00','2018-12-28 15:15:52.702 +00:00');
-Executing (default): INSERT INTO `products` (`id`,`name`,`price`,`createdAt`,`updatedAt`) VALUES (NULL,'Neon Green Hat',21.99,'2018-12-28 15:15:52.702 +00:00','2018-12-28 15:15:52.702 +00:00');
-
 
 const initialInvoices = {
 
@@ -49,11 +42,15 @@ const initialCustomers = {
 
 
 
-function rdcInvoices(state = initialApp, action) {
+function rdcInvoices(state = initialInvoices, action) {
     console.log(action.payload);
+    /*
     const tasksCopy = [...state.tasks];
     const clickedTaskIndex = tasksCopy.findIndex((item => item.id === action.payload))
+    */
+
     switch (action.type) {
+        /*
         case act.CHANGE_INPUT_VALUE:
             const value = action.payload.target.value;
             console.log(action.payload.target.value);
@@ -82,6 +79,7 @@ function rdcInvoices(state = initialApp, action) {
             tasksCopy[clickedTaskIndex].content = state.text;
             tasksCopy[clickedTaskIndex].isEdited = !tasksCopy[clickedTaskIndex].isEdited;
             return {...state, text: '', tasks: tasksCopy, contentToEdit: "" };
+        */
         default:
             return state
     }
@@ -89,8 +87,8 @@ function rdcInvoices(state = initialApp, action) {
 
 const rootReducer = combineReducers({
     invoices: rdcInvoices,
-    customers: rdcCustomers,
-    products: rdcProducts,
+    //customers: rdcCustomers,
+    //products: rdcProducts,
 });
 
 export default rootReducer;
