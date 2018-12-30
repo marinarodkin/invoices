@@ -1,5 +1,5 @@
-export const ADD_NEW_TASK = 'ADD_NEW_TASK';
-export const SET_TO_DO_DONE = 'SET_TO_DO_DONE';
+export const ADD_NEW_INVOICE = 'ADD_NEW_INVOICE';
+export const ADD_NEW_CUSTOMER = 'ADD_NEW_CUSTOMER';
 export const DELETE_TASK = 'DELETE_TASK';
 export const START_EDITING = 'START_EDITING';
 export const FINISH_EDITING = 'FINISH_EDITING';

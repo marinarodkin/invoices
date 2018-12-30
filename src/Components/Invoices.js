@@ -9,9 +9,11 @@ class Invoices extends Component {
     const invoices = this.props.invoices.invoices;
     return (
         <div className = "" >
-            <PageHeader>Invoices App</PageHeader>
+
+          <div className= "top-line">
               <div className = "col-md-10 title">Invoices </div>
-              <Button className="col-xs-2" bsStyle="info"  >Add New</Button>
+          {this.props.invoices.isAddingInvoice ? null : <Button className="col-xs-2" bsStyle="info"  >Add New</Button> }
+          </div>
           <Table striped bordered condensed hover>
             <thead>
             <tr>

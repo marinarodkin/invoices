@@ -14,10 +14,28 @@
 .header{
 
 }
-.app-container{
-  padding: 50px;
-}
 
+.page-header{
+  background: #30d5c8;
+  padding-top: 10px;
+  padding-left: 30px;
+}
+.app-container{
+  padding: 0 50px;
+}
+.top-line{
+  margin-bottom: 50px;
+}
 .title {
   font-size: 30px;
+}
+
+.addNew{
+
+  width: 80%;
+  margin-left: 30px;
+  padding: 20px;
+}
+.btn {
+  margin-right: 20px;
 }

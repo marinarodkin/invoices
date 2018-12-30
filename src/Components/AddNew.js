@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { PageHeader, Button, FormGroup, FormControl, ControlLabel, Table, Form, Col } from 'react-bootstrap';
+import { PageHeader, Button, FormGroup, FormControl, ControlLabel, Table, Form, Col, ButtonGroup } from 'react-bootstrap';
 import { connect } from 'react-redux'
 //import {} from "./../reducers/actions_creators.js"
 
@@ -11,6 +11,9 @@ class AddNew extends Component {
     const productsInInvoice = this.props.invoices.newInvoice.invoiceItems;
     return (
         <div className="addNew">
+          <div className="top-line">
+            <div className="col-md-10 title">Invoices</div>
+          </div>
 
           <Form componentClass="fieldset" horizontal>
             <FormGroup>
@@ -25,7 +28,10 @@ class AddNew extends Component {
                 </FormControl>
               </Col>
               <Col xs={2}>
-                <Button bsStyle="info">Add </Button>
+                <Button bsStyle="info">Select </Button>
+              </Col>
+              <Col xs={2}>
+                <Button bsStyle="info">Add New Customer</Button>
               </Col>
             </FormGroup>
             <FormGroup>
@@ -46,12 +52,15 @@ class AddNew extends Component {
                 <FormControl type="number" placeholder="1"/>
               </Col>
               <Col xs={2}>
-                <Button bsStyle="info">Add </Button>
+                <Button bsStyle="info">Select </Button>
+              </Col>
+              <Col xs={2}>
+                <Button bsStyle="info"> Add New Product </Button>
               </Col>
             </FormGroup>
           </Form>
           <div>
-            <Table striped bordered condensed hover>
+            <Table striped condensed hover>
               <thead>
               <tr>
                 <th className="col-xs-1 text-center">#</th>
@@ -75,37 +84,42 @@ class AddNew extends Component {
             </Table>
 
           </div>
-          <div className="col-md-offset-10 col-md-2 ">Subtotal: <span>{productsInInvoice.reduce((sum, item) => {
-            return sum + item.quantity * item.price
-          }, 0)}</span></div>
-          <hr/>
-          <Form componentClass="fieldset" horizontal className="col-md-offset-7 col-md-5 ">
-            <FormGroup>
-              <Col md={2}>
-                <ControlLabel className="text-right">Discount:</ControlLabel>
-              </Col>
-              <Col md={1}>
-                <FormControl type="number" placeholder="0"/>
-              </Col>
-              <Col md={2}>
-                <Button bsStyle="info">Add </Button>
-              </Col>
-            </FormGroup>
-          </Form>
-              <hr/>
+          <div className="invoice-total col-md-offset-10 col-md-2 text-right">
+            <div className="">Subtotal: <span>{productsInInvoice.reduce((sum, item) => {
+              return sum + item.quantity * item.price
+            }, 0)}</span></div>
+            <hr/>
+            <Form componentClass="fieldset" horizontal className="col-md-offset-7 col-md-5 ">
+              <FormGroup>
+                <Col md={2}>
+                  <ControlLabel className="text-right">Discount:</ControlLabel>
+                </Col>
+                <Col md={1}>
+                  <FormControl type="number" placeholder="0"/>
+                </Col>
+                <Col md={2}>
+                  <Button bsStyle="info" className="  pull-right">Add </Button>
+                </Col>
+              </FormGroup>
+            </Form>
+            <hr/>
 
-              <div className="col-md-offset-10 col-md-2 ">Total: <span>{((productsInInvoice.reduce((sum, item) => {
-                return sum + item.quantity * item.price
-              }, 0)) * ((100 - this.props.invoices.newInvoice.discount)/ 100)).toFixed(2)}</span></div>
-
-
+            <div className="">Total: <span>{((productsInInvoice.reduce((sum, item) => {
+              return sum + item.quantity * item.price
+            }, 0)) * ((100 - this.props.invoices.newInvoice.discount) / 100)).toFixed(2)}</span></div>
+            <ButtonGroup className="">
+              <Button bsStyle="info" className="btn">Cancel</Button>
+              <Button bsStyle="info" className="btn">Add Invoice</Button>
+            </ButtonGroup>
+          </div>
         </div>
+
           );
           }
           }
 
 
-const mapStateToProps = store => {
+          const mapStateToProps = store => {
   return {
     customers: store.customers,
     products: store.products,

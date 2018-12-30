@@ -21,7 +21,8 @@ const initialInvoices = {
                                 {id: 2204, name: 'Egg Timer', invoiceId: 3340, quantity: 5, price: 15.99},
                                 {id: 2203, name: 'Pet Rock', invoiceId: 3340, quantity: 3, price: 5.99}
 
-                 ]}
+                 ]},
+    isAddingInvoice: true,
 
 };
 
