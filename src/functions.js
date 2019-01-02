@@ -28,4 +28,6 @@ export  function getItemName (id) {
     return result.name
 }
 
-
+export  function getInvoiceId() {
+    return 7777;
+}

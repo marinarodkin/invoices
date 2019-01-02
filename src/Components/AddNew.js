@@ -17,31 +17,26 @@ class AddNew extends Component {
     console.log("discount", discount)
     return (
         <div className="addNew">
-          <div className="top-line">
-            <div className="col-md-10 title">Invoices</div>
-          </div>
-          {this.props.invoices.newCustomer !== "" ?
-              (<div>Customer: {this.props.invoices.newCustomer}
-                  <Button bsStyle="info" onClick={this.props.actEditCustomer}>Edit </Button></div> ) :
+          {this.props.invoices.newInvoice.customer  ?
+              (<div className="customer-title">Customer: <span className="customer-name"> {this.props.invoices.newCustomer}</span>
+                  <Button className="customer-edit-btn" bsStyle="info" onClick={this.props.actEditCustomer}>Edit </Button></div> ) :
           <Form componentClass="fieldset" horizontal>
             <FormGroup>
-              <Col xs={1}>
+              <div className="customer-form-block">
                 <ControlLabel className="text-right">Customer:</ControlLabel>
-              </Col>
-              <Col xs={6}>
-                <FormControl componentClass="select" placeholder="Сhoose Customer"
+
+                <FormControl componentClass="select" placeholder="Сhoose Customer" className = "customer-form"
                              onChange={this.props.actChangeInputValue} name="newCustomer">
                   {customers.map(item =>
                       <option value={item.name}>{item.name}</option>
                   )}
                 </FormControl>
-              </Col>
-              <Col xs={2}>
+
                 <Button bsStyle="info" onClick={this.props.actSelectCustomer}>Select </Button>
-              </Col>
-              <Col xs={2}>
+
                 <Button bsStyle="info">Add New Customer</Button>
-              </Col>
+              </div>
+
             </FormGroup>
           </Form>
             }
@@ -75,12 +70,12 @@ class AddNew extends Component {
           </Form>
 
           {productsInInvoice.length < 1 ?
-              (< div className="cncel-total col-md-offset-10 col-md-2 text-right">
+              (< div className="cancel-total col-md-offset-10 col-md-2 text-right">
                 <hr/>
               <Button bsStyle="info" className="btn" onClick={this.props.actCancelNewInvoices}>Cancel</Button>
               </div>)
                     :
-              <div>
+              <div className="invoice-items-table">
                 <Table striped condensed hover>
                   <thead>
                   <tr>
@@ -92,9 +87,9 @@ class AddNew extends Component {
                   </tr>
                   </thead>
                   <tbody>
-                  {productsInInvoice.map((item, index = 1) => (
+                  {productsInInvoice.map((item, index) => (
                       <tr>
-                        <td className="text-center">{index}</td>
+                        <td className="text-center">{index + 1}</td>
                         <td className="text-center">{item.name}</td>
                         <td className="text-center">{item.price}</td>
                         <td className="text-center">{item.quantity}</td>
@@ -132,6 +127,7 @@ class AddNew extends Component {
             </div>
               </div>
           }
+
         </div>
 
     );

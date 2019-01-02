@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 //import { routerReducer, push } from 'react-router-reducers';
 import * as act from './actions'; // CONSTANTS FROM ACTIONS
 import uuidv4 from 'uuid/v4';
-import {getItemName, getItemPrice} from "../functions";
+import {getItemName, getItemPrice, getInvoiceId} from "../functions";
 
 
 
@@ -104,9 +104,19 @@ function rdcInvoices(state = initialInvoices, action) {
             const newInvoiceItems = [...newInvoiceItemsCopy, newInvoiceItem]
             console.log(newInvoiceItemsCopy);
             return {...state, newInvoiceItems: newInvoiceItems, newAmount: 1};
+        case act.EDIT_CUSTOMER:
+             newInvoiceCopy.customer = null;
+             return {...state, newInvoice: newInvoiceCopy};
         case act.ADD_NEW_INVOICE:
         //const {newCustomer, newProduct, newAmount} = this.props.invoices;
-            return {...state, isAddingInvoice: false};
+            ///??? скидку по факту считаю 2 раза - здесь и в компоненте... 1 раз лишнее, но тогда надо записывать ее в store, это ок?
+            const discount = newInvoiceCopy.discount ? (100 - newInvoiceCopy.discount) / 100 : 1;
+            const total =  (newInvoiceItemsCopy.reduce((sum, item) => {
+                return sum + item.quantity * item.price}, 0)) * discount;
+            newInvoiceCopy.id = getInvoiceId();
+            newInvoiceCopy.total = total;
+            newInvoiceCopy.discount = newInvoiceCopy.discount ? newInvoiceCopy.discount : 0;
+            return {...state, invoices: [...invoiceCopy, newInvoiceCopy], newInvoice: {}, newInvoiceItem: []};
         case act.CANCEL_NEW_INVOICE:
             return {...state, isAddingInvoice: false};
         case act.CHANGE_INPUT_VALUE:

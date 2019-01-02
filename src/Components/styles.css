@@ -27,3 +27,28 @@
     font-weight: bold;
     margin-right: 10px;
 }
+.customer-title{
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.customer-name{
+    margin-left: 30px;
+    margin-right: 80px;
+    text-decoration: underline;
+}
+.customer-form-block{
+
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    width: 100%;
+    padding-left: 20px;
+}
+.customer-form{
+    width: 50%;
+    margin-right: 0%;
+}
+.invoice-items-table{
+    margin-top: 50px;
+}

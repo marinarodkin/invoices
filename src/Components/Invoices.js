@@ -10,8 +10,8 @@ class Invoices extends Component {
     return (
         <div className = "" >
 
-          <div className= "top-line">
-              <div className = "col-md-10 title">Invoices </div>
+          <div className= "top-line top-line-inv">
+              <div className = " title">Invoices </div>
           {this.props.invoices.isAddingInvoice ? null : <Button className="col-xs-2" bsStyle="info" onClick={this.props.actSetAddNewActive}  >Add New</Button> }
           </div>
           <Table striped bordered condensed hover>
