@@ -2,6 +2,8 @@ import { combineReducers } from 'redux';
 //import { routerReducer, push } from 'react-router-reducers';
 import * as act from './actions'; // CONSTANTS FROM ACTIONS
 import uuidv4 from 'uuid/v4';
+import {getItemName, getItemPrice} from "../functions";
+
 
 
 const initialInvoices = {
@@ -16,15 +18,23 @@ const initialInvoices = {
         {id: 3317, customer: 'Mary Jane', discount: 20, total: 305.99},
 
     ],
-    newInvoice: {id: 3340, customer: 'Bob Smith', discount: 15, total: 25.99,
+    newInvoice: {} ,
+    newInvoiceItems: [],
+    isAddingInvoice: false,
+    newCustomer: "",
+    newProduct: "",
+    newAmount: 1,
+    newDiscount: 0,
+
+};
+
+/*
+ newInvoice: {id: 3340, customer: 'Bob Smith', discount: 15, total: 25.99,
                  invoiceItems: [{id: 2205, name: 'Neon Green Hat', invoiceId: 3340, quantity: 1, price: 21.99},
                                 {id: 2204, name: 'Egg Timer', invoiceId: 3340, quantity: 5, price: 15.99},
                                 {id: 2203, name: 'Pet Rock', invoiceId: 3340, quantity: 3, price: 5.99}
+*/
 
-                 ]},
-    isAddingInvoice: true,
-
-};
 
 const initialProducts = { products: [
         {id: 2201, name: 'Parachute Pants', price: 29.99, createdAt: '2018-12-28 15:15:52.701 +00:00', updatedAt: '2018-12-28 15:15:52.701 +00:00'},
@@ -61,19 +71,50 @@ function rdcProducts(state = initialProducts, action) {
 }
 
 
+
 function rdcInvoices(state = initialInvoices, action) {
-    console.log(action.payload);
+    const newInvoiceCopy = {...state.newInvoice};
+    const invoiceCopy = [...state.invoices];
+    const stateCopy = {...state};
+    const newInvoiceItemsCopy = [...state.newInvoiceItems];
+
     /*
-    const tasksCopy = [...state.tasks];
+
     const clickedTaskIndex = tasksCopy.findIndex((item => item.id === action.payload))
     */
 
     switch (action.type) {
-        /*
+        case act.SET_ADDNEW_ACTIVE:
+
+            return {...state, isAddingInvoice: !state.isAddingInvoice};
+        case act.SELECT_CUSTOMER:
+            console.log("SELECT_CUSTOMER")
+            const {newCustomer} = stateCopy;
+            newInvoiceCopy.customer = newCustomer;
+            return {...state, newInvoice: newInvoiceCopy};
+        case act.SELECT_DISCOUNT:
+            console.log("SELECT_disc");
+            const {newDiscount} = stateCopy;
+            newInvoiceCopy.discount = newDiscount;
+            return {...state, newInvoice: newInvoiceCopy};
+        case act.SELECT_PRODUCT:
+            console.log("SELECT_product");
+            const {newProduct, newAmount} = stateCopy;
+            const newInvoiceItem = {name: getItemName(newProduct), quantity: newAmount, price: getItemPrice(newProduct)}
+            const newInvoiceItems = [...newInvoiceItemsCopy, newInvoiceItem]
+            console.log(newInvoiceItemsCopy);
+            return {...state, newInvoiceItems: newInvoiceItems, newAmount: 1};
+        case act.ADD_NEW_INVOICE:
+        //const {newCustomer, newProduct, newAmount} = this.props.invoices;
+            return {...state, isAddingInvoice: false};
+        case act.CANCEL_NEW_INVOICE:
+            return {...state, isAddingInvoice: false};
         case act.CHANGE_INPUT_VALUE:
             const value = action.payload.target.value;
             console.log(action.payload.target.value);
-            return {...state, text: value};
+            const name = action.payload.target.name;
+            return {...state,  [name]: value};
+            /*
         case act.ADD_NEW_TASK:
             if (state.text === "") return state;
             const newTask = {content: state.text, done: false, id: uuidv4()};

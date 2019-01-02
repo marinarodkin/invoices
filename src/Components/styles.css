@@ -1,0 +1,29 @@
+.discount {
+    width: 100%;
+}
+.discount-block{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-left: 70px;
+}
+.discount-input{
+    width: 40px;
+    border: none;
+    border-bottom: 1px solid blue ;
+    margin-right: 10px;
+    margin-left: 10px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+}
+.total-sum{
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.total-title{
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 10px;
+}

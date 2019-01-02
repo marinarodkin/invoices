@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { PageHeader, Button, Grid, Row, Col, Table } from 'react-bootstrap';
 import { connect } from 'react-redux'
-//import {} from "./../reducers/actions_creators.js"
+import {actSetAddNewActive} from "./../reducers/actions_creators.js"
 
 class Invoices extends Component {
   render() {
@@ -12,7 +12,7 @@ class Invoices extends Component {
 
           <div className= "top-line">
               <div className = "col-md-10 title">Invoices </div>
-          {this.props.invoices.isAddingInvoice ? null : <Button className="col-xs-2" bsStyle="info"  >Add New</Button> }
+          {this.props.invoices.isAddingInvoice ? null : <Button className="col-xs-2" bsStyle="info" onClick={this.props.actSetAddNewActive}  >Add New</Button> }
           </div>
           <Table striped bordered condensed hover>
             <thead>
@@ -51,7 +51,7 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    //actDeleteTask: payload => dispatch(actDeleteTask(payload)),
+    actSetAddNewActive: payload => dispatch(actSetAddNewActive(payload)),
 
   }
 }
