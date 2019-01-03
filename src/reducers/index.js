@@ -2,9 +2,10 @@ import { combineReducers } from 'redux';
 //import { routerReducer, push } from 'react-router-reducers';
 import * as act from './actions'; // CONSTANTS FROM ACTIONS
 import uuidv4 from 'uuid/v4';
-import {getItemName, getItemPrice, getInvoiceId} from "../functions";
+import {getItemName, getItemPrice, getInvoiceId, getCustomerId} from "../functions";
 
 
+///пока редюсеры в одном файле, я их разнесу на 3 разных файла
 
 const initialInvoices = {
 
@@ -28,64 +29,89 @@ const initialInvoices = {
 
 };
 
-/*
- newInvoice: {id: 3340, customer: 'Bob Smith', discount: 15, total: 25.99,
-                 invoiceItems: [{id: 2205, name: 'Neon Green Hat', invoiceId: 3340, quantity: 1, price: 21.99},
-                                {id: 2204, name: 'Egg Timer', invoiceId: 3340, quantity: 5, price: 15.99},
-                                {id: 2203, name: 'Pet Rock', invoiceId: 3340, quantity: 3, price: 5.99}
-*/
-
-
 const initialProducts = { products: [
         {id: 2201, name: 'Parachute Pants', price: 29.99, createdAt: '2018-12-28 15:15:52.701 +00:00', updatedAt: '2018-12-28 15:15:52.701 +00:00'},
         {id: 2202, name: 'Phone Holder', price: 9.99,  createdAt: '2018-12-28 15:15:52.701 +00:00', updatedAt: '2018-12-28 15:15:52.701 +00:00'},
         {id: 2203, name: 'Pet Rock', price: 5.99,  createdAt: '2018-12-28 15:15:52.701 +00:00', updatedAt: '2018-12-28 15:15:52.701 +00:00'},
         {id: 2204, name: 'Egg Timer', price: 15.99,  createdAt: '2018-12-28 15:15:52.702 +00:00', updatedAt: '2018-12-28 15:15:52.702 +00:00'},
         {id: 2205, name: 'Neon Green Hat', price: 21.99,  createdAt: '2018-12-28 15:15:52.702 +00:00', updatedAt: '2018-12-28 15:15:52.702 +00:00'},
-        ]
-
+        ],
+    productName: "",
+    productAddress: "",
+    productPhone: "",
+    productModalShow: false,
 }
 
 const initialCustomers = {
-    customers: [{id: 111, name: 'Mark Benson', adress: '353 Rochester St, Rialto FL 43250', phone: '555-534-2342' },
-                {id: 112, name: 'Bob Smith', adress: '215 Market St, Dansville CA 94', phone: '555-534-2177' },
-                {id: 113, name: 'John Draper', adress: '890 Main St, Fontana IL 31450', phone: '555-534-1111' },
-                {id: 117, name: 'Mary Jane', adress: '555 Vallei St, Rialto FL 43250', phone: '555-534-2342' },
-                {id: 118, name: 'Freddy Black', adress: '777 Dorton St, Dansville CA 94', phone: '555-534-2177' },
-                {id: 119, name: 'Harry Simus ', adress: '558 Lowpi St, Fontana IL 31450', phone: '555-534-1111' },
-    ]
+    customers: [{id: 111, name: 'Mark Benson', address: '353 Rochester St, Rialto FL 43250', phone: '555-534-2342' },
+                {id: 112, name: 'Bob Smith', address: '215 Market St, Dansville CA 94', phone: '555-534-2177' },
+                {id: 113, name: 'John Draper', address: '890 Main St, Fontana IL 31450', phone: '555-534-1111' },
+                {id: 117, name: 'Mary Jane', address: '555 Vallei St, Rialto FL 43250', phone: '555-534-2342' },
+                {id: 118, name: 'Freddy Black', address: '777 Dorton St, Dansville CA 94', phone: '555-534-2177' },
+                {id: 119, name: 'Harry Simus ', address: '558 Lowpi St, Fontana IL 31450', phone: '555-534-1111' },
+    ],
+    customerName: "",
+    customerAddress: "",
+    customerPhone: "",
+    customerModalShow: false,
+
 }
 
 function rdcCustomers(state = initialCustomers, action) {
+    const customersCopy = [...state.customers];
     switch (action.type) {
+        case act.CHANGE_INPUT_CUSTOMER_VALUE:
+            const value = action.payload.target.value;
+            console.log(action.payload.target.value);
+            const name = action.payload.target.name;
+            return {...state,  [name]: value};
+        case act.ADD_NEW_CUSTOMER:
+            const {customerName, customerAddress, customerPhone } = state;
+            const newCustomer = {id: getCustomerId(), name: customerName, address: customerAddress, phone: customerPhone  }
+             const newCustomers = [...customersCopy, newCustomer]
+            return {...state,  customers: newCustomers, customerName: "", customerAddress: "", customerPhone: "", customerModalShow: false};
+        case act.CUSTOMER_MODAL_SHOW:
+            console.log("CUSTOMER_MODAL_SHOW");
+            return {...state,  customerModalShow: true};
+        case act.CUSTOMER_MODAL_HIDE:
+
+            return {...state,  customerModalShow: false};
         default:
             return state
     }
 }
 
 function rdcProducts(state = initialProducts, action) {
+    const productsCopy = [...state.products];
     switch (action.type) {
+        case act.CHANGE_INPUT_PRODUCT_VALUE:
+            const value = action.payload.target.value;
+            console.log(action.payload.target.value);
+            const name = action.payload.target.name;
+            return {...state,  [name]: value};
+        case act.ADD_NEW_PRODUCT:
+            const {productName, productPrice } = state;
+            const newProduct = {id: getCustomerId(), name: productName, price: productPrice  }
+            const newProducts = [...productsCopy, newProduct]
+            return {...state,  products: newProducts, productName: "", productPrice: "", productModalShow: false};
+        case act.PRODUCT_MODAL_SHOW:
+            console.log("product_MODAL_SHOW");
+            return {...state,  productModalShow: true};
+        case act.PRODUCT_MODAL_HIDE:
+
+            return {...state,  productModalShow: false};
         default:
             return state
     }
 }
-
-
 
 function rdcInvoices(state = initialInvoices, action) {
     const newInvoiceCopy = {...state.newInvoice};
     const invoiceCopy = [...state.invoices];
     const stateCopy = {...state};
     const newInvoiceItemsCopy = [...state.newInvoiceItems];
-
-    /*
-
-    const clickedTaskIndex = tasksCopy.findIndex((item => item.id === action.payload))
-    */
-
     switch (action.type) {
         case act.SET_ADDNEW_ACTIVE:
-
             return {...state, isAddingInvoice: !state.isAddingInvoice};
         case act.SELECT_CUSTOMER:
             console.log("SELECT_CUSTOMER")
@@ -116,7 +142,7 @@ function rdcInvoices(state = initialInvoices, action) {
             newInvoiceCopy.id = getInvoiceId();
             newInvoiceCopy.total = total;
             newInvoiceCopy.discount = newInvoiceCopy.discount ? newInvoiceCopy.discount : 0;
-            return {...state, invoices: [...invoiceCopy, newInvoiceCopy], newInvoice: {}, newInvoiceItem: []};
+            return {...state, invoices: [...invoiceCopy, newInvoiceCopy], newInvoice: {}, newInvoiceItems: []};
         case act.CANCEL_NEW_INVOICE:
             return {...state, isAddingInvoice: false};
         case act.CHANGE_INPUT_VALUE:
@@ -124,32 +150,6 @@ function rdcInvoices(state = initialInvoices, action) {
             console.log(action.payload.target.value);
             const name = action.payload.target.name;
             return {...state,  [name]: value};
-            /*
-        case act.ADD_NEW_TASK:
-            if (state.text === "") return state;
-            const newTask = {content: state.text, done: false, id: uuidv4()};
-            return {...state, tasks: [...tasksCopy, newTask], text: ''};
-        case act.SET_TO_DO_DONE:
-            //const tasksCopy = [...state.tasks];
-            tasksCopy[clickedTaskIndex].done = !tasksCopy[clickedTaskIndex].done;
-            return {...state, tasks: tasksCopy};
-        case act.DELETE_TASK:
-            //const taskCopy = [...state.tasks];
-            const tasks = tasksCopy.filter(item => item.id !== action.payload);
-            return {...state, tasks: tasks};
-        case act.START_EDITING:
-            //const clickedTaskIndex = tasksCopy.findIndex((item => item.id === id));
-            tasksCopy[clickedTaskIndex].isEdited = !tasksCopy[clickedTaskIndex].isEdited;
-
-            const content = tasksCopy[clickedTaskIndex].content;
-            console.log(content);
-            return {...state, text: content, tasks: tasksCopy };
-        case act.FINISH_EDITING:
-            if (state.text === "") return;
-            tasksCopy[clickedTaskIndex].content = state.text;
-            tasksCopy[clickedTaskIndex].isEdited = !tasksCopy[clickedTaskIndex].isEdited;
-            return {...state, text: '', tasks: tasksCopy, contentToEdit: "" };
-        */
         default:
             return state
     }

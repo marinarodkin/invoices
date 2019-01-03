@@ -18,9 +18,10 @@ class Invoices extends Component {
             <thead>
             <tr>
               <th className="col-xs-2 text-center">#</th>
-              <th className="col-xs-6">Customer</th>
-              <th className="col-xs-2 text-center">Discount</th>
-              <th className="col-xs-2 text-center">Total</th>
+              <th className="col-xs-6 text-center">Customer</th>
+              <th className="col-xs-1 text-center">Discount</th>
+              <th className="col-xs-1 text-center">Total</th>
+                <th className="col-xs-1 text-center"></th>
             </tr>
             </thead>
             <tbody>
@@ -28,8 +29,9 @@ class Invoices extends Component {
             <tr>
               <td  className ="text-center">{item.id}</td>
               <td className ="text-center">{item.customer}</td>
-              <td className="text-center">{item.discount}</td>
-              <td className="text-center" >{item.total}</td>
+              <td className="text-center">{item.discount}%</td>
+              <td className="text-center" >$ {item.total}</td>
+                <td className="text-center" ><Button className="" bsStyle="info" onClick={this.props.actSetAddNewActive} >Edit</Button></td>
             </tr>
             ))}
             </tbody>

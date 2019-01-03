@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Invoices from './Components/Invoices.js'
-import AddNew from './Components/AddNew.js'
+import AddNew from './Components/AddNew/AddNew.js'
+import AddNewCustomer from './Components/AddNewCustomer/AddNewCustomer.js'
+import AddNewProduct from './Components/AddNewProduct/AddNewProduct.js'
 import './App.css';
 import {PageHeader} from "react-bootstrap";
 import { connect } from 'react-redux';
@@ -11,11 +13,11 @@ class App extends Component {
       <div className="App app-container">
           <PageHeader className= "page-header">Invoices App</PageHeader>
           {this.props.invoices.isAddingInvoice ? <AddNew/> : null}
-
           <Invoices/>
-
+          <hr/>
+          <AddNewCustomer/>
+          <AddNewProduct/>
           </div>
-
     );
   }
 }
@@ -30,7 +32,6 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        //actDeleteTask: payload => dispatch(actDeleteTask(payload)),
 
     }
 }

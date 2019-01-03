@@ -31,3 +31,7 @@ export  function getItemName (id) {
 export  function getInvoiceId() {
     return 7777;
 }
+export  function getCustomerId() {
+    return 2210;
+}
+

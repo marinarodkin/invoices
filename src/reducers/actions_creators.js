@@ -3,9 +3,7 @@ import * as act from './actions';
 export  function actAddNewInvoice(payload) {
     return { type: act.ADD_NEW_INVOICE, payload };
 }
-export  function actAddNewCustomer(payload) {
-    return { type: act.ADD_NEW_CUSTOMER, payload };
-}
+
 
 export  function actDeleteInvoice(payload) {
     return { type: act.DELETE_INVOICE, payload };
@@ -45,16 +43,33 @@ export  function actSelectDiscount(payload) {
 export  function actEditCustomer(payload) {
     return { type: act.EDIT_CUSTOMER, payload };
 }
+export  function actAddNewCustomer(payload) {
+    return { type: act.ADD_NEW_CUSTOMER, payload };
+}
+export  function actChangeInputCustomerValue(payload) {
+    return { type: act.CHANGE_INPUT_CUSTOMER_VALUE, payload };
+}
 
-/*
-export const ADD_NEW_INVOICE = 'ADD_NEW_INVOICE';
-export const ADD_NEW_CUSTOMER = 'ADD_NEW_CUSTOMER';
-export const DELETE_INVOICE = 'DELETE_TASK';
-export const START_EDITING = 'START_EDITING';
-export const FINISH_EDITING = 'FINISH_EDITING';
-export const CHANGE_INPUT_VALUE = 'CHANGE_INPUT_VALUE';
-export const SET_ADDNEW_ACTIVE = 'SET_ADDNEW_ACTIVE';
-export const SELECT_CUSTOMER = 'SELECT_CUSTOMER';
-export const SELECT_PRODUCT = 'SELECT_PRODUCT
+export  function actCustomerModalShow(payload) {
+    return { type: act.CUSTOMER_MODAL_SHOW, payload };
+}
 
-*/
+export  function actCustomerModalHide(payload) {
+    return { type: act.CUSTOMER_MODAL_HIDE, payload };
+}
+export  function actAddNewProduct(payload) {
+    return { type: act.ADD_NEW_PRODUCT, payload };
+}
+export  function actChangeInputProductValue(payload) {
+    return { type: act.CHANGE_INPUT_PRODUCT_VALUE, payload };
+}
+
+export  function actProductModalShow(payload) {
+    return { type: act.PRODUCT_MODAL_SHOW, payload };
+}
+
+export  function actProductModalHide(payload) {
+    return { type: act.PRODUCT_MODAL_HIDE, payload };
+}
+
+
