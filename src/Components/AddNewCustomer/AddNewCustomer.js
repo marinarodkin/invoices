@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import {Button, FormGroup, ControlLabel, FormControl, Form, Modal} from 'react-bootstrap';
 import { connect } from 'react-redux'
-import {actChangeInputCustomerValue, actChangeInputValue, actAddNewCustomer, actCustomerModalShow, actCustomerModalHide } from "../../reducers/actions_creators";
+import {actChangeInputCustomerValue, actChangeInputValue, actAddNewCustomer, actCustomerModalShow, actCustomerModalHide, actFinishEditingCustomer } from "../../reducers/actions_creators";
 import './styles.css'
 
 class AddNewCustomer extends Component {
+    finishEditCustomer = (id) => (event) => {
+        event.preventDefault(event);
+        this.props.actFinishEditingCustomer(id)
+    }
     render() {
         return (
             <div className="static-modal add-customer-modal">
@@ -23,13 +27,13 @@ class AddNewCustomer extends Component {
                         </FormGroup>
                         <FormGroup>
                             <ControlLabel className="">Customer Address:</ControlLabel>
-                            <FormControl type="text" placeholder="Input Customer Name" className=""
+                            <FormControl type="text" placeholder="Input Customer Address" className=""
                                          onChange={this.props.actChangeInputCustomerValue}
                                          value={this.props.customers.customerAddress} name="customerAddress"/>
                         </FormGroup>
                         <FormGroup>
                             <ControlLabel className="">Customer Phone:</ControlLabel>
-                            <FormControl type="phone" placeholder="Input Customer Name" className=""
+                            <FormControl type="phone" placeholder="Input Customer Phone" className=""
                                          onChange={this.props.actChangeInputCustomerValue}
                                          value={this.props.customers.customerPhone} name="customerPhone"/>
                         </FormGroup>
@@ -38,7 +42,7 @@ class AddNewCustomer extends Component {
                     </Form>
                     <Modal.Footer>
                         <Button bsStyle="info" className="btn" onClick={this.props.actCustomerModalHide}>Cancel</Button>
-                        <Button bsStyle="info" className="btn" onClick={this.props.actAddNewCustomer}
+                        <Button bsStyle="info" className="btn" onClick={this.props.customers.editingCustomer === 0 ? this.props.actAddNewCustomer : this.finishEditCustomer(this.props.customers.editingCustomer)}
                                 disabled={this.props.customers.customerName === "" || this.props.customers.customerAddress === "" || this.props.customers.customerPhone === ""}>Add
                             New Customer</Button>
                     </Modal.Footer>
@@ -58,13 +62,16 @@ const mapStateToProps = store => {
 }
 
 const mapDispatchToProps = dispatch => {
-  return {
-      actChangeInputCustomerValue: payload => dispatch(actChangeInputCustomerValue(payload)),
-      actAddNewCustomer: payload => dispatch(actAddNewCustomer(payload)),
-      actChangeInputValue: payload => dispatch(actChangeInputValue(payload)),
-      actCustomerModalShow: payload => dispatch(actCustomerModalShow(payload)),
-      actCustomerModalHide: payload => dispatch(actCustomerModalHide(payload)),
-  }
+    return {
+        actChangeInputCustomerValue: payload => dispatch(actChangeInputCustomerValue(payload)),
+        actAddNewCustomer: payload => dispatch(actAddNewCustomer(payload)),
+        actChangeInputValue: payload => dispatch(actChangeInputValue(payload)),
+        actCustomerModalShow: payload => dispatch(actCustomerModalShow(payload)),
+        actCustomerModalHide: payload => dispatch(actCustomerModalHide(payload)),
+        actFinishEditingCustomer: payload => dispatch(actFinishEditingCustomer(payload)),
+
+    }
+
 }
 
 export default connect(

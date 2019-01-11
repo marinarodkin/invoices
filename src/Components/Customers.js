@@ -2,18 +2,18 @@ import React, { Component } from 'react';
 import {  Button, Table } from 'react-bootstrap';
 import { connect } from 'react-redux'
 import {actSetAddNewActive} from "./../reducers/actions_creators.js"
-import {actDeleteInvoice, actStartEditing, actCustomerModalShow,} from "./../reducers/actions_creators";
-import AddNewCustomer from "../App";
+import {actDeleteCustomer, actStartEditingCustomer, actCustomerModalShow, } from "./../reducers/actions_creators";
+
 
 class Customers extends Component {
 
-    deleteInvoice = (id) => (event) => {
+    deleteCustomer = (id) => (event) => {
         event.preventDefault(event);
-        this.props.actDeleteInvoice(id)
+        this.props.actDeleteCustomer(id)
     }
-    startEditInvoice = (id) => (event) => {
+    startEditCustomer = (id) => (event) => {
         event.preventDefault(event);
-        this.props.actStartEditing(id)
+        this.props.actStartEditingCustomer(id)
     }
 
     render() {
@@ -24,7 +24,7 @@ class Customers extends Component {
 
                 <div className= "top-line top-line-inv">
                     <div className = " title">Customers </div>
-                    {this.props.invoices.isAddingInvoice ? null : <Button className="col-xs-2" bsStyle="info" onClick={this.props.actSetAddNewActive}  >Add New</Button> }
+                    <Button className="col-xs-2 pull-right" bsStyle="info" onClick={this.props.actCustomerModalShow}>Add New</Button>
                 </div>
                 <Table striped bordered condensed hover>
                     <thead>
@@ -44,13 +44,13 @@ class Customers extends Component {
                             <td className ="text-center">{item.name}</td>
                             <td className="text-center">{item.address}</td>
                             <td className="text-center" >{item.phone}</td>
-                            <td className="text-center" ><Button className="" bsStyle="info" onClick={this.startEditInvoice(item.id)} >Edit</Button></td>
-                            <td className="text-center" ><Button className="" bsStyle="info" onClick={this.deleteInvoice(item.id)} >Delete</Button></td>
+                            <td className="text-center" ><Button className="" bsStyle="info" onClick={this.startEditCustomer(item.id)} >Edit</Button></td>
+                            <td className="text-center" ><Button className="" bsStyle="info" onClick={this.deleteCustomer(item.id)} >Delete</Button></td>
                         </tr>
                     ))}
                     </tbody>
                 </Table>;
-                <AddNewCustomer/>
+
             </div>
 
 
@@ -62,7 +62,7 @@ class Customers extends Component {
 
 const mapStateToProps = store => {
     return {
-        invoices: store.invoices,
+
         customers: store.customers,
     }
 }
@@ -70,9 +70,9 @@ const mapStateToProps = store => {
 const mapDispatchToProps = dispatch => {
     return {
         actSetAddNewActive: payload => dispatch(actSetAddNewActive(payload)),
-        actDeleteInvoice: payload => dispatch(actDeleteInvoice(payload)),
-        actStartEditing: payload => dispatch(actStartEditing(payload)),
-
+        actDeleteCustomer: payload => dispatch(actDeleteCustomer(payload)),
+        actStartEditingCustomer: payload => dispatch(actStartEditingCustomer(payload)),
+        actCustomerModalShow: payload => dispatch(actCustomerModalShow(payload)),
     }
 }
 

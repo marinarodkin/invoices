@@ -4,7 +4,6 @@ import * as act from './actions'; // CONSTANTS FROM ACTIONS
 import uuidv4 from 'uuid/v4';
 import {getItemName, getItemPrice, getInvoiceId, getCustomerId} from "../functions";
 
-
 ///пока редюсеры в одном файле, я их разнесу на 3 разных файла
 
 const initialState = {
@@ -41,9 +40,9 @@ const initialState = {
         {id: 2205, name: 'Neon Green Hat', price: 21.99,  createdAt: '2018-12-28 15:15:52.702 +00:00', updatedAt: '2018-12-28 15:15:52.702 +00:00'},
         ],
     productName: "",
-    productAddress: "",
-    productPhone: "",
+    productPrice: "",
     productModalShow: false,
+    editingProduct: 0,
 
     /*customers*/
     customers: [{id: 111, name: 'Mark Benson', address: '353 Rochester St, Rialto FL 43250', phone: '555-534-2342' },
@@ -57,6 +56,7 @@ const initialState = {
     customerAddress: "",
     customerPhone: "",
     customerModalShow: false,
+    editingCustomer: 0,
 
 
 }
@@ -152,7 +152,7 @@ function rdcInvoices(state = initialState, action) {
             console.log('action.payload.target.name', action.payload.target.name);
             return {...state,  [name]: value};
         case act.DELETE_INVOICE:
-            console.log('action.payload', action.payload);
+            console.log('act.DELETE_INVOICE: action.payload', action.payload);
             const idForDelete = action.payload;
             const newInvoices = invoiceCopy.filter(item =>item.id !== idForDelete)
             return {...state, invoices: newInvoices};
@@ -175,6 +175,7 @@ function rdcInvoices(state = initialState, action) {
 
 function rdcCustomers(state = initialState, action) {
     const customersCopy = [...state.customers];
+    const stateCopy = {...state};
     switch (action.type) {
         case act.CHANGE_INPUT_CUSTOMER_VALUE:
             const value = action.payload.target.value;
@@ -192,6 +193,27 @@ function rdcCustomers(state = initialState, action) {
         case act.CUSTOMER_MODAL_HIDE:
 
             return {...state,  customerModalShow: false};
+        case act.DELETE_CUSTOMER:
+            console.log('action.payload', action.payload);
+            const idForDelete = action.payload;
+
+            const updatedCustomers = customersCopy.filter(item =>item.id != idForDelete)
+            console.log('updatedCustomers', updatedCustomers);
+            return {...state, customers: updatedCustomers};
+        case act.START_EDITING_CUSTOMER:
+            console.log('action.payload', action.payload);
+            const idForEdit = action.payload;
+            const customerToEdit = customersCopy.find(item =>item.id === idForEdit)
+            console.log('customerToEdit', customerToEdit);
+            return {...state, customerModalShow: true, customerName: customerToEdit.name,  customerAddress: customerToEdit.address, customerPhone: customerToEdit.phone, editingCustomer: idForEdit};
+        case act.FINISH_EDITING_CUSTOMER:
+            console.log('action.payload', action.payload);
+            const editingCustomer = action.payload;
+            const toEditCustomer = customersCopy.find(item =>item.id === editingCustomer);
+            toEditCustomer.name = stateCopy.customerName;
+            toEditCustomer.address = stateCopy.customerAddress;
+            toEditCustomer.phone = stateCopy.customerPhone;
+            return {...state, customers: customersCopy,customerModalShow: false, customerName: "", customerAddress: "", customerPhone: "",  editingCustomer: 0};
         default:
             return state
     }
@@ -199,6 +221,7 @@ function rdcCustomers(state = initialState, action) {
 
 function rdcProducts(state = initialState, action) {
     const productsCopy = [...state.products];
+    const stateCopy = {...state};
     switch (action.type) {
         case act.CHANGE_INPUT_PRODUCT_VALUE:
             const value = action.payload.target.value;
@@ -216,6 +239,26 @@ function rdcProducts(state = initialState, action) {
         case act.PRODUCT_MODAL_HIDE:
 
             return {...state,  productModalShow: false};
+        case act.DELETE_PRODUCT:
+            console.log('action.payload', action.payload);
+            const idForDelete = action.payload;
+            const updatedProducts = productsCopy.filter(item =>item.id != idForDelete)
+            console.log('updatedProducts', updatedProducts);
+            return {...state, products: updatedProducts};
+        case act.START_EDITING_PRODUCT:
+            console.log('action.payload', action.payload);
+            const idForEdit = action.payload;
+            const productToEdit = productsCopy.find(item =>item.id === idForEdit)
+            console.log('customerToEdit',  productToEdit);
+            return {...state,  productModalShow: true,  productName:  productToEdit.name,   productPrice:  productToEdit.price, editingProduct: idForEdit};
+        case act.FINISH_EDITING_PRODUCT:
+            console.log('action.payload', action.payload);
+            const editingProduct = action.payload;
+            const toEditProduct =  productsCopy.find(item =>item.id === editingProduct);
+            toEditProduct.name = stateCopy.productName;
+            toEditProduct.price = stateCopy.productPrice;
+
+            return {...state, products: productsCopy,productModalShow: false, productName: "", productPrice: "",   editingProduct: 0};
         default:
             return state
     }

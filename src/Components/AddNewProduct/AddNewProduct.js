@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
-import {PageHeader, Button, Grid, Row, Col, Table, FormGroup, ControlLabel, FormControl, Form, Modal} from 'react-bootstrap';
+import { Button, FormGroup, ControlLabel, FormControl, Form, Modal} from 'react-bootstrap';
 import { connect } from 'react-redux'
-import {actSetAddNewActive} from "../../reducers/actions_creators.js"
-import {actChangeInputProductValue,  actAddNewProduct, actProductModalShow, actProductModalHide } from "../../reducers/actions_creators";
+import {
+    actChangeInputProductValue,
+    actAddNewProduct,
+    actProductModalShow,
+    actProductModalHide,
+    actFinishEditingProduct
+} from "../../reducers/actions_creators";
 import './styles.css'
 
 class AddNewProduct extends Component {
+    finishEditProduct = (id) => (event) => {
+        event.preventDefault(event);
+        this.props.actFinishEditingProduct(id)
+    }
     render() {
         return (
             <div className="static-modal add-customer-modal">
@@ -31,9 +40,8 @@ class AddNewProduct extends Component {
                     </Form>
                     <Modal.Footer>
                         <Button bsStyle="info" className="btn" onClick={this.props.actProductModalHide}>Cancel</Button>
-                        <Button bsStyle="info" className="btn" onClick={this.props.actAddNewProduct}
-                                disabled={this.props.products.productName === "" || this.props.products.productPrice === ""}>Add
-                            New Product</Button>
+                        <Button bsStyle="info" className="btn" onClick={this.props.products.editingProduct === 0 ? this.props.actAddNewProduct : this.finishEditProduct(this.props.products.editingProduct)}
+                                disabled={this.props.products.productName === "" || this.props.products.productPrice === ""}>SAVE</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
@@ -53,6 +61,7 @@ const mapDispatchToProps = dispatch => {
       actAddNewProduct: payload => dispatch(actAddNewProduct(payload)),
       actProductModalShow: payload => dispatch(actProductModalShow(payload)),
       actProductModalHide: payload => dispatch(actProductModalHide(payload)),
+      actFinishEditingProduct: payload => dispatch(actFinishEditingProduct(payload)),
   }
 }
 

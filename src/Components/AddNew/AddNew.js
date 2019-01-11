@@ -29,7 +29,7 @@ class AddNew extends Component {
             <select className='form-control form-select' id='customer_id'
                     value={this.props.invoices.newCustomer}
                     onChange={this.props.actChangeInputValue}
-                    name = 'newCustomer'>
+                    name='newCustomer'>
               <option hidden={true} value={''}>
                 Select customer
               </option>
@@ -44,10 +44,10 @@ class AddNew extends Component {
           <div className='form-group'>
             <label htmlFor='customer_id' className='form-label'>Product</label>
             <select className='form-control form-select' id='customer_id'
-                    value= {this.props.invoiceItems.newProduct}
+                    value={this.props.invoiceItems.newProduct}
                     onChange={this.props.actChangeInvoiceItemsValue}
 
-            name='newProduct'>
+                    name='newProduct'>
 
               <option hidden={true} value={''}>
                 Select product
@@ -59,7 +59,8 @@ class AddNew extends Component {
                   </option>
               )})}
             </select>
-             <Button bsStyle="info" className="btn" onClick={this.props.actSelectProduct} disabled={this.props.invoiceItems.newProduct === ''}>Add Product</Button>
+            <Button bsStyle="info" className="btn" onClick={this.props.actSelectProduct}
+                    disabled={this.props.invoiceItems.newProduct === ''}>Add Product</Button>
           </div>
 
           {productsInInvoice.length < 1 ?
@@ -89,7 +90,7 @@ class AddNew extends Component {
                           <input className="quantity-input" type="number" placeholder="0"
                                  onChange={this.props.actProductQuantity}
                                  value={item.quantity} name={item.name}/>
-                         </td>
+                        </td>
                         <th className="col-xs-1 text-center">{item.quantity * item.price}</th>
                       </tr>
                   ))}
@@ -103,19 +104,21 @@ class AddNew extends Component {
                     return sum + item.quantity * item.price
                   }, 0)}</span></div>
                   <div className="discount-block">
-                    <label htmlFor = "discount-input" className="text-left">Discount:</label>
+                    <label htmlFor="discount-input" className="text-left">Discount:</label>
                     <input className="discount-input" type="number" placeholder="0"
                            onChange={this.props.actChangeInputValue}
                            value={this.props.newDiscount} name="newDiscount"/>
-                    </div>
+                  </div>
                   <hr/>
                   <div className="total-title">Total: <span
                       className="total-sum">{((productsInInvoice.reduce((sum, item) => {
                     return sum + item.quantity * item.price
                   }, 0)) * discount).toFixed(2)}</span></div>
                   <div className="add-btns">
-                    <Button bsStyle="info" className="btn btn-cancel" onClick={this.props.actCancelNewInvoices}>Cancel</Button>
-                    <Button bsStyle="info" className="btn" onClick={this.props.invoices.editingInvoice != 0 ? this.finishEditInvoice(this.props.invoices.editingInvoice) : this.props.actAddNewInvoice}
+                    <Button bsStyle="info" className="btn btn-cancel"
+                            onClick={this.props.actCancelNewInvoices}>Cancel</Button>
+                    <Button bsStyle="info" className="btn"
+                            onClick={this.props.invoices.editingInvoice != 0 ? this.finishEditInvoice(this.props.invoices.editingInvoice) : this.props.actAddNewInvoice}
                             disabled={this.props.invoices.newCustomer === "" || productsInInvoice.length < 1}>Add
                       Invoice</Button>
                   </div>
@@ -144,17 +147,10 @@ const mapDispatchToProps = dispatch => {
     actAddNewInvoice: payload => dispatch(actAddNewInvoice(payload)),
     actCancelNewInvoices: payload => dispatch(actCancelNewInvoices(payload)),
     actChangeInputValue: payload => dispatch(actChangeInputValue(payload)),
-    actSelectCustomer: payload => dispatch(actSelectCustomer(payload)),
     actSelectProduct: payload => dispatch(actSelectProduct(payload)),
-    actSelectDiscount: payload => dispatch(actSelectDiscount(payload)),
-    actEditCustomer: payload => dispatch(actEditCustomer(payload)),
-    actCustomerModalShow: payload => dispatch(actCustomerModalShow(payload)),
-    actProductModalShow: payload => dispatch(actProductModalShow(payload)),
     actProductQuantity: payload => dispatch(actProductQuantity(payload)),
     actChangeInvoiceItemsValue: payload => dispatch(actChangeInvoiceItemsValue(payload)),
     actFinishEditing: payload => dispatch(actFinishEditing(payload)),
-
-
   }
 }
 

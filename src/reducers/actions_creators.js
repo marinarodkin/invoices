@@ -4,23 +4,9 @@ export  function actAddNewInvoice(payload) {
     return { type: act.ADD_NEW_INVOICE, payload };
 }
 
-
-export  function actDeleteInvoice(payload) {
-    return { type: act.DELETE_INVOICE, payload };
-}
-
-export  function actStartEditing(payload) {
-    return { type: act.START_EDITING, payload };
-}
-
-export  function actFinishEditing(payload) {
-    return { type: act.FINISH_EDITING, payload };
-}
-
 export  function actChangeInputValue(payload) {
     return { type: act.CHANGE_INPUT_VALUE, payload };
 }
-
 
 export  function actSetAddNewActive(payload) {
     return { type: act.SET_ADDNEW_ACTIVE, payload };
@@ -78,4 +64,37 @@ export  function actProductQuantity(payload) {
 
 export  function actChangeInvoiceItemsValue(payload) {
     return { type: act.CHANGE_INVOICEITEMS_VALUE, payload };
+}
+export  function actDeleteInvoice(payload) {
+    return { type: act.DELETE_INVOICE, payload };
+}
+
+export  function actStartEditing(payload) {
+    return { type: act.START_EDITING, payload };
+}
+
+export  function actFinishEditing(payload) {
+    return { type: act.FINISH_EDITING, payload };
+}
+export  function actDeleteCustomer(payload) {
+    return { type: act.DELETE_CUSTOMER, payload };
+}
+
+export  function actStartEditingCustomer(payload) {
+    return { type: act.START_EDITING_CUSTOMER, payload };
+}
+
+export  function actFinishEditingCustomer(payload) {
+    return { type: act.FINISH_EDITING_CUSTOMER, payload };
+}
+export  function actDeleteProduct(payload) {
+    return { type: act.DELETE_PRODUCT, payload };
+}
+
+export  function actStartEditingProduct(payload) {
+    return { type: act.START_EDITING_PRODUCT, payload };
+}
+
+export  function actFinishEditingProduct(payload) {
+    return { type: act.FINISH_EDITING_PRODUCT, payload };
 }

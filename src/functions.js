@@ -29,6 +29,7 @@ export  function getItemName (id) {
     return result.name
 }
 
+/*make ids for new items*/
 export  function getInvoiceId() {
     const code = uuidv4();
     const id = code.substr(0,4)
