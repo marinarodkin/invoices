@@ -1,65 +1,66 @@
 import React, { Component } from 'react';
-import { Button, FormGroup, FormControl, ControlLabel, Table, Form, Col, } from 'react-bootstrap';
+import { Button, Table } from 'react-bootstrap';
 import { connect } from 'react-redux'
-import {actAddNewInvoice, actChangeInputValue, actCancelNewInvoices, actSelectCustomer, actSelectProduct, actSelectDiscount, actEditCustomer, actCustomerModalShow, actProductModalShow} from "../../reducers/actions_creators.js"
+import {actAddNewInvoice, actChangeInputValue, actCancelNewInvoices, actSelectCustomer,
+  actSelectProduct, actSelectDiscount, actEditCustomer, actCustomerModalShow, actProductModalShow, actProductQuantity,
+  actChangeInvoiceItemsValue, actFinishEditing} from "../../reducers/actions_creators.js"
 import './styles.css'
 
 
 class AddNew extends Component {
+  finishEditInvoice = (id) => (event) => {
+    event.preventDefault(event);
+    this.props.actFinishEditing(id)
+  }
+
   render() {
 
     const customers = this.props.customers.customers;
     const products = this.props.products.products;
-    const productsInInvoice = this.props.invoices.newInvoiceItems;
-    const discount = this.props.invoices.newInvoice.discount ? (100 - this.props.invoices.newInvoice.discount) / 100 : 1;
+    const productsInInvoice = this.props.invoiceItems.invoiceItems || [];
+    const discount = this.props.invoices.newDiscount ? (100 - this.props.invoices.newDiscount) / 100 : 1;
     //вынести сюда подсчет итогов (subtotal, total) - или лучше считать на месте ???, таблицу с продуктами вынести в отдельный компонент?
 
     return (
         <div className="addNew">
-          {this.props.invoices.newInvoice.customer ?
-              (<div className="customer-title">Customer: <span
-                  className="customer-name"> {this.props.invoices.newCustomer}</span>
-                <Button className="customer-edit-btn" bsStyle="info" onClick={this.props.actEditCustomer}>Edit </Button>
-              </div>) :
-              <Form >
 
-                <FormGroup>
-                  <div className="customer-form-block">
-                    <ControlLabel className="">Customer:</ControlLabel>
-                    <FormControl componentClass="select" placeholder="Сhoose Customer" className="customer-form"
-                                 onChange={this.props.actChangeInputValue} name="newCustomer">
-                      <option value="">Сhoose Customer....</option>
-                      {customers.map(item =>
-                          <option value={item.name}>{item.name}</option>
-                      )}
-                    </FormControl>
-                    <Button bsStyle="info" onClick={this.props.actSelectCustomer}
-                            disabled={this.props.invoices.newCustomer === ""} className="customer-select-btn">Select </Button>
-                    <Button bsStyle="info" onClick={this.props.actCustomerModalShow}>Add New Customer</Button>
-                  </div>
-                </FormGroup>
-              </Form>
-          }
-          <Form>
-            <FormGroup>
-              <div className="customer-form-block">
-                <ControlLabel className="">Product:</ControlLabel>
-                <FormControl componentClass="select" placeholder="Сhoose Product"
-                             onChange={this.props.actChangeInputValue} name="newProduct" className="product-form">
-                  <option value="">Сhoose Product....</option>
-                  {products.map(item =>
-                      <option value={item.id}>{item.name}, - - - $ {item.price}</option>
-                  )}
-                </FormControl>
-                <ControlLabel className="text-right">Amount:</ControlLabel>
-                <FormControl type="number" placeholder="1" onChange={this.props.actChangeInputValue} className="amount-form"
-                             value={this.props.invoices.newAmount} name="newAmount"/>
-                <Button bsStyle="info" onClick={this.props.actSelectProduct}
-                        disabled={this.props.invoices.newProduct === ""} className="product-select-btn">Select </Button>
-                <Button bsStyle="info" onClick={this.props.actProductModalShow}> Add New Product </Button>
-              </div>
-            </FormGroup>
-          </Form>
+          <div className='form-group'>
+            <label htmlFor='customer_id' className='form-label'>Customer</label>
+            <select className='form-control form-select' id='customer_id'
+                    value={this.props.invoices.newCustomer}
+                    onChange={this.props.actChangeInputValue}
+                    name = 'newCustomer'>
+              <option hidden={true} value={''}>
+                Select customer
+              </option>
+
+              {customers.map(customer =>
+                  <option key={customer.id} value={customer.name}>
+                    {customer.name}
+                  </option>
+              )})}
+            </select>
+          </div>
+          <div className='form-group'>
+            <label htmlFor='customer_id' className='form-label'>Product</label>
+            <select className='form-control form-select' id='customer_id'
+                    value= {this.props.invoiceItems.newProduct}
+                    onChange={this.props.actChangeInvoiceItemsValue}
+
+            name='newProduct'>
+
+              <option hidden={true} value={''}>
+                Select product
+              </option>
+
+              {products.map(product =>
+                  <option key={product.id} value={product.id}>
+                    {product.name}
+                  </option>
+              )})}
+            </select>
+             <Button bsStyle="info" className="btn" onClick={this.props.actSelectProduct} disabled={this.props.invoiceItems.newProduct === ''}>Add Product</Button>
+          </div>
 
           {productsInInvoice.length < 1 ?
               (< div className="cancel-total col-md-offset-10 col-md-2 text-right">
@@ -84,7 +85,11 @@ class AddNew extends Component {
                         <td className="text-center">{index + 1}</td>
                         <td className="text-center">{item.name}</td>
                         <td className="text-center">{item.price}</td>
-                        <td className="text-center">{item.quantity}</td>
+                        <td className="text-center">
+                          <input className="quantity-input" type="number" placeholder="0"
+                                 onChange={this.props.actProductQuantity}
+                                 value={item.quantity} name={item.name}/>
+                         </td>
                         <th className="col-xs-1 text-center">{item.quantity * item.price}</th>
                       </tr>
                   ))}
@@ -92,36 +97,32 @@ class AddNew extends Component {
                 </Table>
 
                 <hr/>
-                < div className="invoice-total col-md-offset-8 col-md-4 text-right">
+                < div className="invoice-total">
                   <div className="total-title">Subtotal: <span
                       className="total-sum">{productsInInvoice.reduce((sum, item) => {
                     return sum + item.quantity * item.price
                   }, 0)}</span></div>
-
-
                   <div className="discount-block">
-                    <ControlLabel className="text-left">Discount:</ControlLabel>
+                    <label htmlFor = "discount-input" className="text-left">Discount:</label>
                     <input className="discount-input" type="number" placeholder="0"
                            onChange={this.props.actChangeInputValue}
-                           value={this.props.invoices.newDiscount} name="newDiscount"/>
-                    <Button bsStyle="info" className="" onClick={this.props.actSelectDiscount}>Add</Button>
-                  </div>
+                           value={this.props.newDiscount} name="newDiscount"/>
+                    </div>
                   <hr/>
-
                   <div className="total-title">Total: <span
                       className="total-sum">{((productsInInvoice.reduce((sum, item) => {
                     return sum + item.quantity * item.price
                   }, 0)) * discount).toFixed(2)}</span></div>
-                  <div>
+                  <div className="add-btns">
                     <Button bsStyle="info" className="btn btn-cancel" onClick={this.props.actCancelNewInvoices}>Cancel</Button>
-                    <Button bsStyle="info" className="btn" onClick={this.props.actAddNewInvoice}
+                    <Button bsStyle="info" className="btn" onClick={this.props.invoices.editingInvoice != 0 ? this.finishEditInvoice(this.props.invoices.editingInvoice) : this.props.actAddNewInvoice}
                             disabled={this.props.invoices.newCustomer === "" || productsInInvoice.length < 1}>Add
                       Invoice</Button>
                   </div>
                 </div>
               </div>
           }
-
+          <hr/>
         </div>
 
     );
@@ -134,6 +135,7 @@ const mapStateToProps = store => {
     customers: store.customers,
     products: store.products,
     invoices: store.invoices,
+    invoiceItems: store.invoiceItems
   }
 }
 
@@ -148,6 +150,11 @@ const mapDispatchToProps = dispatch => {
     actEditCustomer: payload => dispatch(actEditCustomer(payload)),
     actCustomerModalShow: payload => dispatch(actCustomerModalShow(payload)),
     actProductModalShow: payload => dispatch(actProductModalShow(payload)),
+    actProductQuantity: payload => dispatch(actProductQuantity(payload)),
+    actChangeInvoiceItemsValue: payload => dispatch(actChangeInvoiceItemsValue(payload)),
+    actFinishEditing: payload => dispatch(actFinishEditing(payload)),
+
+
   }
 }
 

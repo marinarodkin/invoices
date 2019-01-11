@@ -72,4 +72,10 @@ export  function actProductModalHide(payload) {
     return { type: act.PRODUCT_MODAL_HIDE, payload };
 }
 
+export  function actProductQuantity(payload) {
+    return { type: act.CHANGE_PRODUCTQUANTITY, payload };
+}
 
+export  function actChangeInvoiceItemsValue(payload) {
+    return { type: act.CHANGE_INVOICEITEMS_VALUE, payload };
+}

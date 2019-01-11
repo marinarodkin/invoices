@@ -1,3 +1,4 @@
+import uuidv4 from 'uuid/v4';
 
 export  function getItemPrice (id) {
     console.log(id);
@@ -29,9 +30,13 @@ export  function getItemName (id) {
 }
 
 export  function getInvoiceId() {
-    return 7777;
+    const code = uuidv4();
+    const id = code.substr(0,4)
+    return id;
 }
 export  function getCustomerId() {
-    return 2210;
+    const code = uuidv4();
+    const id = code.substr(0,4)
+    return id;
 }
 

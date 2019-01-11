@@ -1,6 +1,24 @@
 .discount {
     width: 100%;
 }
+.invoice-total{
+    display: flex;
+    flex-direction: column;
+}
+.form-group{
+    display: flex;
+}
+.form-label{
+    width: 10%;
+    box-sizing: border-box;
+}
+.form-select{
+    width: 30%;
+    margin-right: 20px;
+}
+.quantity-input{
+    width: 50px;
+}
 .discount-block{
     display: flex;
     flex-wrap: nowrap;
@@ -28,6 +46,7 @@
     font-size: 16px;
     font-weight: bold;
     margin-right: 10px;
+    margin-left: auto;
 }
 .customer-title{
     font-size: 14px;
@@ -84,4 +103,7 @@
 }
 .btn-cancel{
     margin-right: 20px;
+}
+.add-btns{
+    margin-left: auto;
 }

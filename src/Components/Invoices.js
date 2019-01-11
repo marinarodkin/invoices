@@ -1,9 +1,18 @@
 import React, { Component } from 'react';
-import { PageHeader, Button, Grid, Row, Col, Table } from 'react-bootstrap';
+import {  Button,  Table } from 'react-bootstrap';
 import { connect } from 'react-redux'
-import {actSetAddNewActive} from "./../reducers/actions_creators.js"
+import {actSetAddNewActive, actDeleteInvoice, actStartEditing} from "./../reducers/actions_creators.js"
 
 class Invoices extends Component {
+
+    deleteInvoice = (id) => (event) => {
+    event.preventDefault(event);
+    this.props.actDeleteInvoice(id)
+   }
+    startEditInvoice = (id) => (event) => {
+        event.preventDefault(event);
+        this.props.actStartEditing(id)
+    }
   render() {
     //const invoices = [];
     const invoices = this.props.invoices.invoices;
@@ -22,6 +31,7 @@ class Invoices extends Component {
               <th className="col-xs-1 text-center">Discount</th>
               <th className="col-xs-1 text-center">Total</th>
                 <th className="col-xs-1 text-center"></th>
+                <th className="col-xs-1 text-center"></th>
             </tr>
             </thead>
             <tbody>
@@ -31,7 +41,8 @@ class Invoices extends Component {
               <td className ="text-center">{item.customer}</td>
               <td className="text-center">{item.discount}%</td>
               <td className="text-center" >$ {item.total}</td>
-                <td className="text-center" ><Button className="" bsStyle="info" onClick={this.props.actSetAddNewActive} >Edit</Button></td>
+                <td className="text-center" ><Button className="" bsStyle="info" onClick={this.startEditInvoice(item.id)} >Edit</Button></td>
+                <td className="text-center" ><Button className="" bsStyle="info" onClick={this.deleteInvoice(item.id)} >Delete</Button></td>
             </tr>
             ))}
             </tbody>
@@ -54,6 +65,8 @@ const mapStateToProps = store => {
 const mapDispatchToProps = dispatch => {
   return {
     actSetAddNewActive: payload => dispatch(actSetAddNewActive(payload)),
+      actDeleteInvoice: payload => dispatch(actDeleteInvoice(payload)),
+      actStartEditing: payload => dispatch(actStartEditing(payload)),
 
   }
 }
