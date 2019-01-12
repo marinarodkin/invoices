@@ -39,7 +39,7 @@ class Customers extends Component {
                     </thead>
                     <tbody>
                     {customers.map(item => (
-                        <tr>
+                        <tr key = {item.id}>
                             <td  className ="text-center">{item.id}</td>
                             <td className ="text-center">{item.name}</td>
                             <td className="text-center">{item.address}</td>

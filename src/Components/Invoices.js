@@ -36,7 +36,7 @@ class Invoices extends Component {
             </thead>
             <tbody>
             {invoices.map(item => (
-            <tr>
+            <tr key = {item.id}>
               <td  className ="text-center">{item.id}</td>
               <td className ="text-center">{item.customer}</td>
               <td className="text-center">{item.discount}%</td>

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Button, Table } from 'react-bootstrap';
 import { connect } from 'react-redux'
-import {actAddNewInvoice, actChangeInputValue, actCancelNewInvoices, actSelectCustomer,
-  actSelectProduct, actSelectDiscount, actEditCustomer, actCustomerModalShow, actProductModalShow, actProductQuantity,
+import {actAddNewInvoice, actChangeInputValue, actCancelNewInvoices,
+  actSelectProduct,  actProductQuantity,
   actChangeInvoiceItemsValue, actFinishEditing} from "../../reducers/actions_creators.js"
 import './styles.css'
 
@@ -82,7 +82,7 @@ class AddNew extends Component {
                   </thead>
                   <tbody>
                   {productsInInvoice.map((item, index) => (
-                      <tr>
+                      <tr key = {`p-${item.name}`}>
                         <td className="text-center">{index + 1}</td>
                         <td className="text-center">{item.name}</td>
                         <td className="text-center">{item.price}</td>

@@ -38,7 +38,7 @@ class Products extends Component {
                     </thead>
                     <tbody>
                     {products.map(item => (
-                        <tr>
+                        <tr key = {item.id}>
                             <td  className ="text-center">{item.id}</td>
                             <td className ="text-center">{item.name}</td>
                             <td className="text-center">{item.price}</td>
