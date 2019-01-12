@@ -57,8 +57,6 @@ const initialState = {
     customerPhone: "",
     customerModalShow: false,
     editingCustomer: 0,
-
-
 }
 
 function rdcInvoiceItems(state = initialState, action) {
