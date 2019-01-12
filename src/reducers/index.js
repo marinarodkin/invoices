@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 //import { routerReducer, push } from 'react-router-reducers';
 import * as act from './actions'; // CONSTANTS FROM ACTIONS
-import uuidv4 from 'uuid/v4';
-import {getItemName, getItemPrice, getInvoiceId, getCustomerId} from "../functions";
+
+import {getItemPrice, getInvoiceId, getCustomerId} from "../functions";
 
 ///пока редюсеры в одном файле, я их разнесу на 3 разных файла
 
@@ -19,6 +19,7 @@ const initialState = {
 
     ],
     isAddingInvoice: false,
+    newInvoice: {},
     newDiscount: 0,
     newCustomer: '',
     newTotal: 0,
@@ -27,7 +28,6 @@ const initialState = {
     /*invoiceItems*/
     invoiceItems: [],
     newProduct: "",
-    newProductQuanity: 1,
     newProductTotal: 0,
     newProductPrice: 0,
 
@@ -65,46 +65,34 @@ function rdcInvoiceItems(state = initialState, action) {
     const invoiceItemsCopy = [...state.invoiceItems];
     const stateCopy = {...state};
     switch (action.type) {
-        case act.CHANGE_INVOICEITEMS_VALUE:
+        case act.CHANGE_INVOICEITEMS_VALUE:   //input-product field
             const value = action.payload.target.value;
             const name = action.payload.target.name;
-            const price = getItemPrice(value);
+            const price = getItemPrice(value, state.products);
             return {...state,  [name]: value, newProductPrice: price };
         case act.SELECT_PRODUCT:
-            console.log("SELECT_product");
-            const {newProduct, newProductQuanity} = stateCopy;
-            const itemToChange = invoiceItemsCopy.find(item => item.name === getItemName(newProduct));
-            if(itemToChange){
+            const {newProduct} = stateCopy;
+            const itemToChange = invoiceItemsCopy.find(item => item.name === newProduct); //checking if this item is already in table
+            if(itemToChange){     //when this item is already in table
                 itemToChange.quantity = itemToChange.quantity + 1;
-                console.log('invoiceItemsCopy', invoiceItemsCopy);
-                return {...state, invoiceItems: invoiceItemsCopy, newProductQuanity: 1, newProductTotal: 0}
+                return {...state, invoiceItems: invoiceItemsCopy, newProductTotal: 0}
             }
-            else {
+            else {  //when this item is the first time selected
                 const newInvoiceItem = {
-                    name: getItemName(newProduct), quantity: newProductQuanity, price: getItemPrice(newProduct)
+                    name:newProduct, quantity: 1, price: getItemPrice(newProduct, state.products)
                 }
                 const newInvoiceItems = [...invoiceItemsCopy, newInvoiceItem]
-                console.log('newInvoiceItems', newInvoiceItems);
-
-                return {...state, invoiceItems: newInvoiceItems, newProductQuanity: 1, newProductTotal: 0}
+                return {...state, invoiceItems: newInvoiceItems, newProductTotal: 0}
             }
-        case act.CHANGE_PRODUCTQUANTITY:
-            console.log("CHANGE_PRODUCTQUANTITY");
+        case act.CHANGE_PRODUCTQUANTITY:  //in table in quantity-input field
             const quantityValue = action.payload.target.value;
-            console.log( 'action.payload.target',  action.payload.target);
             const name1 = action.payload.target.name;
             const productToChange = invoiceItemsCopy.find(item => item.name === name1);
             productToChange.quantity = quantityValue;
             productToChange.total = quantityValue *  productToChange.price;
             return {...state, invoiceItems: invoiceItemsCopy};
-        case act.ADD_NEW_INVOICE:
-            console.log('ADD_NEW_INVOICE');
-            return {...state, newCustomer: '', newDiscount: 0, newTotal: 0, invoiceItems: []};
-        case act.START_EDITING:
-            console.log('action.payload', action.payload);
-            const idForEdit = action.payload;
-
-            return {...state};
+        case act.ADD_NEW_INVOICE:    //this action dispatched  is in 2 reducers, need to clean invoiceItems array (????)
+             return {...state, invoiceItems: []};
     default:
     return state
 }
@@ -119,22 +107,11 @@ function rdcInvoices(state = initialState, action) {
     switch (action.type) {
         case act.SET_ADDNEW_ACTIVE:
             return {...state, isAddingInvoice: !state.isAddingInvoice};
-        /*
-            case act.SELECT_CUSTOMER:
-            console.log("SELECT_CUSTOMER")
-            const {newCustomer} = stateCopy;
-            newInvoiceCopy.customer = newCustomer;
-            return {...state, newInvoice: newInvoiceCopy};
-        case act.SELECT_DISCOUNT:
-            console.log("SELECT_disc");
-            const {newDiscount} = stateCopy;
-            newInvoiceCopy.discount = newDiscount;
-            return {...state, newInvoice: newInvoiceCopy};
-        */
-
+        case act.CHANGE_INPUT_VALUE:    //input-customer field
+            const value = action.payload.target.value;
+            const name = action.payload.target.name;
+            return {...state,  [name]: value};
         case act.ADD_NEW_INVOICE:
-            console.log('ADD_NEW_INVOICE');
-            ///??? скидку по факту считаю 2 раза - здесь и в компоненте... 1 раз лишнее, но тогда надо записывать ее в store, это ок?
             const discount = stateCopy.newDiscount !== 0 ? (100 - stateCopy.newDiscount) / 100 : 1;
             const total =  (newInvoiceItemsCopy.reduce((sum, item) => {
                 return sum + item.quantity * item.price}, 0)) * discount;
@@ -145,24 +122,15 @@ function rdcInvoices(state = initialState, action) {
             return {...state, invoices: [...invoiceCopy, newInvoiceCopy], newCustomer: '', newDiscount: 0, newTotal: 0, invoiceItems: []};
         case act.CANCEL_NEW_INVOICE:
             return {...state, isAddingInvoice: false};
-        case act.CHANGE_INPUT_VALUE:
-            const value = action.payload.target.value;
-            console.log(action.payload.target);
-            const name = action.payload.target.name;
-            console.log('action.payload.target.name', action.payload.target.name);
-            return {...state,  [name]: value};
         case act.DELETE_INVOICE:
-            console.log('act.DELETE_INVOICE: action.payload', action.payload);
             const idForDelete = action.payload;
             const newInvoices = invoiceCopy.filter(item =>item.id !== idForDelete)
             return {...state, invoices: newInvoices};
         case act.START_EDITING:
-            console.log('action.payload', action.payload);
             const idForEdit = action.payload;
             const invoicesToEdit = invoiceCopy.find(item =>item.id === idForEdit)
             return {...state, isAddingInvoice: true, newCustomer: invoicesToEdit.customer, newDiscount: invoicesToEdit.discount, editingInvoice: idForEdit};
         case act.FINISH_EDITING:
-            console.log('action.payload', action.payload);
             const editingInvoice = action.payload;
             const toEditInvoice = invoiceCopy.find(item =>item.id === editingInvoice);
             toEditInvoice.customer = stateCopy.newCustomer;
@@ -196,7 +164,6 @@ function rdcCustomers(state = initialState, action) {
         case act.DELETE_CUSTOMER:
             console.log('action.payload', action.payload);
             const idForDelete = action.payload;
-
             const updatedCustomers = customersCopy.filter(item =>item.id != idForDelete)
             console.log('updatedCustomers', updatedCustomers);
             return {...state, customers: updatedCustomers};

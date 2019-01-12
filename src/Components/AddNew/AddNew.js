@@ -23,7 +23,6 @@ class AddNew extends Component {
 
     return (
         <div className="addNew">
-
           <div className='form-group'>
             <label htmlFor='customer_id' className='form-label'>Customer</label>
             <select className='form-control form-select' id='customer_id'
@@ -33,7 +32,6 @@ class AddNew extends Component {
               <option hidden={true} value={''}>
                 Select customer
               </option>
-
               {customers.map(customer =>
                   <option key={customer.id} value={customer.name}>
                     {customer.name}
@@ -42,19 +40,16 @@ class AddNew extends Component {
             </select>
           </div>
           <div className='form-group'>
-            <label htmlFor='customer_id' className='form-label'>Product</label>
-            <select className='form-control form-select' id='customer_id'
+            <label htmlFor='product_id' className='form-label'>Product</label>
+            <select className='form-control form-select' id='product_id'
                     value={this.props.invoiceItems.newProduct}
                     onChange={this.props.actChangeInvoiceItemsValue}
-
                     name='newProduct'>
-
               <option hidden={true} value={''}>
                 Select product
               </option>
-
               {products.map(product =>
-                  <option key={product.id} value={product.id}>
+                  <option key={product.id} value={product.name}>
                     {product.name}
                   </option>
               )})}
@@ -62,7 +57,6 @@ class AddNew extends Component {
             <Button bsStyle="info" className="btn" onClick={this.props.actSelectProduct}
                     disabled={this.props.invoiceItems.newProduct === ''}>Add Product</Button>
           </div>
-
           {productsInInvoice.length < 1 ?
               (< div className="cancel-total col-md-offset-10 col-md-2 text-right">
                 <hr/>
@@ -82,7 +76,7 @@ class AddNew extends Component {
                   </thead>
                   <tbody>
                   {productsInInvoice.map((item, index) => (
-                      <tr key = {`p-${item.name}`}>
+                      <tr key={`p-${item.name}`}>
                         <td className="text-center">{index + 1}</td>
                         <td className="text-center">{item.name}</td>
                         <td className="text-center">{item.price}</td>
@@ -127,7 +121,6 @@ class AddNew extends Component {
           }
           <hr/>
         </div>
-
     );
   }
 }

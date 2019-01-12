@@ -21,21 +21,21 @@ class AddNewCustomer extends Component {
                     <Form className="add-form">
                         <FormGroup>
                             <ControlLabel className="">Customer Name:</ControlLabel>
-                            <FormControl type="text" placeholder="Input Customer Name" className=""
-                                         onChange={this.props.actChangeInputCustomerValue}
-                                         value={this.props.customers.customerName} name="customerName"/>
+                            <FormControl type="text" placeholder={this.props.customers.editingCustomer === 0 ? "Input Customer Name": this.props.customers.customerName } className=""
+                                         onBlur={this.props.actChangeInputCustomerValue}
+                                         name="customerName"/>
                         </FormGroup>
                         <FormGroup>
                             <ControlLabel className="">Customer Address:</ControlLabel>
-                            <FormControl type="text" placeholder="Input Customer Address" className=""
-                                         onChange={this.props.actChangeInputCustomerValue}
-                                         value={this.props.customers.customerAddress} name="customerAddress"/>
+                            <FormControl type="text" placeholder={this.props.customers.editingCustomer === 0 ? "Input Customer Address": this.props.customers.customerAddress } className=""
+                                         onBlur={this.props.actChangeInputCustomerValue}
+                                          name="customerAddress"/>
                         </FormGroup>
                         <FormGroup>
                             <ControlLabel className="">Customer Phone:</ControlLabel>
-                            <FormControl type="phone" placeholder="Input Customer Phone" className=""
-                                         onChange={this.props.actChangeInputCustomerValue}
-                                         value={this.props.customers.customerPhone} name="customerPhone"/>
+                            <FormControl type="phone" placeholder={this.props.customers.editingCustomer === 0 ? "Input Customer Phone": this.props.customers.customerPhone}
+                                         onBlur={this.props.actChangeInputCustomerValue}
+                                         name="customerPhone"/>
                         </FormGroup>
                         <div>
                         </div>
@@ -78,5 +78,8 @@ export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(AddNewCustomer)
-
-
+/*
+<FormControl type="text" placeholder="Input Customer Name" className=""
+onChange={this.props.actChangeInputCustomerValue}
+value={this.props.customers.customerName} name="customerName"/>
+*/

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { connect } from 'react-redux'
 import {actSetAddNewActive} from "./../reducers/actions_creators.js"
+import { Link } from 'react-router-dom'
 
 class Menu extends Component {
   render() {
@@ -11,16 +12,13 @@ class Menu extends Component {
         <nav className="navbar navbar-default">
             <div className="container-fluid">
 
-                <div className="navbar-header">
-                    ...
-                </div>
-
                 <div className="collapse navbar-collapse" id="navbar-main">
 
                     <ul className="nav navbar-nav">
-                        <li className="active"><a href="#">Invoices</a></li>
-                        <li><a href="#">Customers</a></li>
-                        <li><a href="#">Products</a></li>
+                        <li><Link to='/'>Invoices</Link></li>
+                        <li><Link to='/customers'>Customers</Link></li>
+                        <li><Link to='/products'>Products</Link></li>
+
                     </ul>
 
                 </div>
@@ -49,5 +47,6 @@ export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(Menu)
+
 
 

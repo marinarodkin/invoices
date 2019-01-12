@@ -5,10 +5,13 @@ import AddNew from './Components/AddNew/AddNew.js'
 import AddNewCustomer from './Components/AddNewCustomer/AddNewCustomer.js'
 import AddNewProduct from './Components/AddNewProduct/AddNewProduct.js'
 import Menu from './Components/Menu.js'
+//import Main from './Components/Main.js'
+import Main from './Main.js'
 import Products from './Components/Products.js'
 import './App.css';
 import {PageHeader} from "react-bootstrap";
 import { connect } from 'react-redux';
+
 
 class App extends Component {
   render() {
@@ -18,11 +21,7 @@ class App extends Component {
           <PageHeader className= "page-header">Invoices App</PageHeader>
           <Menu/>
           {this.props.invoices.isAddingInvoice ? <AddNew/> : null}
-          <Invoices/>
-          <hr/>
-          <Customers/>
-          <hr/>
-          <Products/>
+          <Main/>
           <AddNewCustomer/>
           <AddNewProduct/>
           </div>
@@ -50,3 +49,5 @@ export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(App)
+
+
