@@ -43,8 +43,7 @@ class AddNewCustomer extends Component {
                     <Modal.Footer>
                         <Button bsStyle="info" className="btn" onClick={this.props.actCustomerModalHide}>Cancel</Button>
                         <Button bsStyle="info" className="btn" onClick={this.props.customers.editingCustomer === 0 ? this.props.actAddNewCustomer : this.finishEditCustomer(this.props.customers.editingCustomer)}
-                                disabled={this.props.customers.customerName === "" || this.props.customers.customerAddress === "" || this.props.customers.customerPhone === ""}>Add
-                            New Customer</Button>
+                                disabled={this.props.customers.customerName === "" || this.props.customers.customerAddress === "" || this.props.customers.customerPhone === ""}>Save Customer</Button>
                     </Modal.Footer>
                 </Modal>
             </div>

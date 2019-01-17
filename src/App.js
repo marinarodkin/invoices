@@ -20,8 +20,8 @@ class App extends Component {
 
           <PageHeader className= "page-header">Invoices App</PageHeader>
           <Menu/>
-          {this.props.invoices.isAddingInvoice ? <AddNew/> : null}
-          <Main/>
+
+
           <AddNewCustomer/>
           <AddNewProduct/>
           </div>

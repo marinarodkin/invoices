@@ -41,7 +41,7 @@ class AddNewProduct extends Component {
                     <Modal.Footer>
                         <Button bsStyle="info" className="btn" onClick={this.props.actProductModalHide}>Cancel</Button>
                         <Button bsStyle="info" className="btn" onClick={this.props.products.editingProduct === 0 ? this.props.actAddNewProduct : this.finishEditProduct(this.props.products.editingProduct)}
-                                disabled={this.props.products.productName === "" || this.props.products.productPrice === ""}>SAVE</Button>
+                                disabled={this.props.products.productName === "" || this.props.products.productPrice === ""}>Save</Button>
                     </Modal.Footer>
                 </Modal>
             </div>

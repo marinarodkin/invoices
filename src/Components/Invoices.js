@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {  Button,  Table } from 'react-bootstrap';
 import { connect } from 'react-redux'
 import {actSetAddNewActive, actDeleteInvoice, actStartEditing} from "./../reducers/actions_creators.js"
+import AddNew from './AddNew/AddNew.js';
 
 class Invoices extends Component {
 
@@ -17,12 +18,15 @@ class Invoices extends Component {
     //const invoices = [];
     const invoices = this.props.invoices.invoices;
     return (
-        <div className = "" >
+
+        <div className = "" style = {{marginTop: "20px"}}>
 
           <div className= "top-line top-line-inv">
               <div className = " title">Invoices </div>
           {this.props.invoices.isAddingInvoice ? null : <Button className="col-xs-2" bsStyle="info" onClick={this.props.actSetAddNewActive}  >Add New</Button> }
+
           </div>
+            {this.props.invoices.isAddingInvoice ? <AddNew/> : null}
           <Table striped bordered condensed hover>
             <thead>
             <tr>

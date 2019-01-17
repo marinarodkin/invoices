@@ -3,21 +3,50 @@ import { Button, Table } from 'react-bootstrap';
 import { connect } from 'react-redux'
 import {actAddNewInvoice, actChangeInputValue, actCancelNewInvoices,
   actSelectProduct,  actProductQuantity,
-  actChangeInvoiceItemsValue, actFinishEditing} from "../../reducers/actions_creators.js"
+  actChangeInvoiceItemsValue, actFinishEditing, actCreateInvoiceId} from "../../reducers/actions_creators.js"
 import './styles.css'
-
+import {getItemPrice, getInvoiceId, getCustomerId} from "../../functions";
 
 class AddNew extends Component {
-  finishEditInvoice = (id) => (event) => {
+  finishEditInvoice = (payload) => (event) => {
     event.preventDefault(event);
-    this.props.actFinishEditing(id)
+    this.props.actFinishEditing(payload)
   }
 
+  addNewInvoice = (id) => (event) => {
+    event.preventDefault(event);
+    this.props.actAddNewInvoice(id)
+  }
+  selectProduct = (products) => (event) => {
+    event.preventDefault(event);
+    this.props. actSelectProduct(products)
+  }
+  changeProductQuantity = () => (event) => {
+    event.preventDefault(event);
+
+  }
+
+  changeInvoiceDetailsValue= (products) => (event) => {
+    event.preventDefault(event);
+    console.log('event', event)
+    this.props.actChangeInvoiceItemsValue({products: products, event: event})
+  }
+  /*
+  componentDidMount() {
+    console.log('componentDidMount')
+    const id = getCustomerId();
+    this.props.actCreateInvoiceId(id)
+  }
+
+
+  */
   render() {
+
 
     const customers = this.props.customers.customers;
     const products = this.props.products.products;
     const productsInInvoice = this.props.invoiceItems.invoiceItems || [];
+    const details = this.props.invoiceItems.invoiceDetails;
     const discount = this.props.invoices.newDiscount ? (100 - this.props.invoices.newDiscount) / 100 : 1;
     //вынести сюда подсчет итогов (subtotal, total) - или лучше считать на месте ???, таблицу с продуктами вынести в отдельный компонент?
 
@@ -43,7 +72,7 @@ class AddNew extends Component {
             <label htmlFor='product_id' className='form-label'>Product</label>
             <select className='form-control form-select' id='product_id'
                     value={this.props.invoiceItems.newProduct}
-                    onChange={this.props.actChangeInvoiceItemsValue}
+                    onChange={this.changeInvoiceDetailsValue(products)}
                     name='newProduct'>
               <option hidden={true} value={''}>
                 Select product
@@ -54,7 +83,7 @@ class AddNew extends Component {
                   </option>
               )})}
             </select>
-            <Button bsStyle="info" className="btn" onClick={this.props.actSelectProduct}
+            <Button bsStyle="info" className="btn" onClick={this.selectProduct(products)}
                     disabled={this.props.invoiceItems.newProduct === ''}>Add Product</Button>
           </div>
           {productsInInvoice.length < 1 ?
@@ -99,7 +128,7 @@ class AddNew extends Component {
                   }, 0)}</span></div>
                   <div className="discount-block">
                     <label htmlFor="discount-input" className="text-left">Discount:</label>
-                    <input className="discount-input" type="number" placeholder="0"
+                    <input className="discount-input" type="number" placeholder={this.props.newDiscount}
                            onChange={this.props.actChangeInputValue}
                            value={this.props.newDiscount} name="newDiscount"/>
                   </div>
@@ -112,9 +141,8 @@ class AddNew extends Component {
                     <Button bsStyle="info" className="btn btn-cancel"
                             onClick={this.props.actCancelNewInvoices}>Cancel</Button>
                     <Button bsStyle="info" className="btn"
-                            onClick={this.props.invoices.editingInvoice != 0 ? this.finishEditInvoice(this.props.invoices.editingInvoice) : this.props.actAddNewInvoice}
-                            disabled={this.props.invoices.newCustomer === "" || productsInInvoice.length < 1}>Add
-                      Invoice</Button>
+                            onClick={this.props.invoices.editingInvoice != 0 ? this.finishEditInvoice({id: this.props.invoices.editingInvoice, productsInInvoice: productsInInvoice}) : this.addNewInvoice({productsInInvoice: productsInInvoice, id: this.props.invoices.newInvoiceId} )}
+                            disabled={this.props.invoices.newCustomer === "" || productsInInvoice.length < 1}>Save Invoice</Button>
                   </div>
                 </div>
               </div>
@@ -144,6 +172,8 @@ const mapDispatchToProps = dispatch => {
     actProductQuantity: payload => dispatch(actProductQuantity(payload)),
     actChangeInvoiceItemsValue: payload => dispatch(actChangeInvoiceItemsValue(payload)),
     actFinishEditing: payload => dispatch(actFinishEditing(payload)),
+    actCreateInvoiceId: payload => dispatch(actCreateInvoiceId(payload)),
+
   }
 }
 

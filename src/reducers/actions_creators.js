@@ -98,3 +98,7 @@ export  function actStartEditingProduct(payload) {
 export  function actFinishEditingProduct(payload) {
     return { type: act.FINISH_EDITING_PRODUCT, payload };
 }
+
+export  function actCreateInvoiceId(payload) {
+    return { type: act.CREATE_INVOICE_ID, payload };
+}
