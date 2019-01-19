@@ -44,7 +44,7 @@ class Invoices extends Component {
               <td  className ="text-center">{item.id}</td>
               <td className ="text-center">{item.customer}</td>
               <td className="text-center">{item.discount}%</td>
-              <td className="text-center" >$ {item.total}</td>
+              <td className="text-center" >$ {item.total.toFixed(2)}</td>
                 <td className="text-center" ><Button className="" bsStyle="info" onClick={this.startEditInvoice(item.id)} >Edit</Button></td>
                 <td className="text-center" ><Button className="" bsStyle="info" onClick={this.deleteInvoice(item.id)} >Delete</Button></td>
             </tr>

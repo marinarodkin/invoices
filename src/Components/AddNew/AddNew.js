@@ -21,15 +21,21 @@ class AddNew extends Component {
     event.preventDefault(event);
     this.props. actSelectProduct(products)
   }
-  changeProductQuantity = () => (event) => {
+  changeProductQuantity = (productsInInvoice) => (event) => {
+    console.log('changeProductQuantity')
     event.preventDefault(event);
+    const target = event.target;
+    this.props.actProductQuantity({productsInInvoice: productsInInvoice, name: target.name, value: target.value })
 
   }
 
-  changeInvoiceDetailsValue= (products) => (event) => {
+  changeInvoiceDetailsValue = (products) => (event) => {
+    console.log('changeInvoiceDetailsValue')
     event.preventDefault(event);
-    console.log('event', event)
-    this.props.actChangeInvoiceItemsValue({products: products, event: event})
+    console.log('event', event);
+    const target = event.target;
+
+    this.props.actChangeInvoiceItemsValue({products: products, name: target.name, value: target.value })
   }
   /*
   componentDidMount() {
@@ -47,7 +53,9 @@ class AddNew extends Component {
     const products = this.props.products.products;
     const productsInInvoice = this.props.invoiceItems.invoiceItems || [];
     const details = this.props.invoiceItems.invoiceDetails;
-    const discount = this.props.invoices.newDiscount ? (100 - this.props.invoices.newDiscount) / 100 : 1;
+    const discount = this.props.invoices.newDiscount != 0 ? (100 - this.props.invoices.newDiscount) / 100 : 1;
+    const newProduct = this.props.invoiceItems.newProduct;
+    const newTotal = (this.props.invoices.newSubTotal * discount).toFixed(2);
     //вынести сюда подсчет итогов (subtotal, total) - или лучше считать на месте ???, таблицу с продуктами вынести в отдельный компонент?
 
     return (
@@ -83,7 +91,7 @@ class AddNew extends Component {
                   </option>
               )})}
             </select>
-            <Button bsStyle="info" className="btn" onClick={this.selectProduct(products)}
+            <Button bsStyle="info" className="btn" onClick={this.selectProduct({products: products, productsInInvoice: productsInInvoice, newProduct: newProduct})}
                     disabled={this.props.invoiceItems.newProduct === ''}>Add Product</Button>
           </div>
           {productsInInvoice.length < 1 ?
@@ -111,7 +119,7 @@ class AddNew extends Component {
                         <td className="text-center">{item.price}</td>
                         <td className="text-center">
                           <input className="quantity-input" type="number" placeholder="0"
-                                 onChange={this.props.actProductQuantity}
+                                 onChange={this.changeProductQuantity(productsInInvoice)}
                                  value={item.quantity} name={item.name}/>
                         </td>
                         <th className="col-xs-1 text-center">{item.quantity * item.price}</th>
@@ -120,28 +128,24 @@ class AddNew extends Component {
                   </tbody>
                 </Table>
 
-                <hr/>
+                <hr/>j
                 < div className="invoice-total">
                   <div className="total-title">Subtotal: <span
-                      className="total-sum">{productsInInvoice.reduce((sum, item) => {
-                    return sum + item.quantity * item.price
-                  }, 0)}</span></div>
+                      className="total-sum">{this.props.invoices.newSubTotal}</span></div>
                   <div className="discount-block">
                     <label htmlFor="discount-input" className="text-left">Discount:</label>
-                    <input className="discount-input" type="number" placeholder={this.props.newDiscount}
+                    <input className="discount-input" type="number" placeholder={this.props.invoices.newDiscount}
                            onChange={this.props.actChangeInputValue}
-                           value={this.props.newDiscount} name="newDiscount"/>
+                           value={this.props.invoices.newDiscount} name="newDiscount"/>
                   </div>
                   <hr/>
                   <div className="total-title">Total: <span
-                      className="total-sum">{((productsInInvoice.reduce((sum, item) => {
-                    return sum + item.quantity * item.price
-                  }, 0)) * discount).toFixed(2)}</span></div>
+                      className="total-sum">{newTotal}</span></div>
                   <div className="add-btns">
                     <Button bsStyle="info" className="btn btn-cancel"
                             onClick={this.props.actCancelNewInvoices}>Cancel</Button>
                     <Button bsStyle="info" className="btn"
-                            onClick={this.props.invoices.editingInvoice != 0 ? this.finishEditInvoice({id: this.props.invoices.editingInvoice, productsInInvoice: productsInInvoice}) : this.addNewInvoice({productsInInvoice: productsInInvoice, id: this.props.invoices.newInvoiceId} )}
+                            onClick={this.props.invoices.editingInvoice != 0 ? this.finishEditInvoice({id: this.props.invoices.editingInvoice, productsInInvoice: productsInInvoice, total: newTotal}) : this.addNewInvoice({productsInInvoice: productsInInvoice, id: this.props.invoices.newInvoiceId, total: newTotal} )}
                             disabled={this.props.invoices.newCustomer === "" || productsInInvoice.length < 1}>Save Invoice</Button>
                   </div>
                 </div>
